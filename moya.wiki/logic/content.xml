@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moya xmlns="http://moyaproject.com"
+      xmlns:let="http://moyaproject.com/let"
+      xmlns:db="http://moyaproject.com/db"
+      xmlns:forms="http://moyaproject.com/forms"
+      xmlns:html="http://moyaproject.com/html"
+      xmlns:w="http://moyaproject.com/widgets"
+      xmlns:img="http://moyaproject.com/imagelib">
+
+
+    <content libname="content.base" template="base.html">
+        <title>${page.title}</title>
+        <section name="body">
+            <markdown>${page.content}</markdown>
+        </section>
+    </content>
+
+
+    <content libname="content.page" extends="#content.base">
+
+    </content>
+
+    <content libname="content.page.edit" extends="#content.base">
+        <title>Edit ${page.title}</title>
+        <section name="body" merge="prepend">
+
+            <w:tab-panel active="edit" id="postedit">
+                <w:tab title="Edit Post" id="edit">
+                    <render src="form"/>
+                </w:tab>
+                <w:tab title="Preview" id="preview">
+                    <html:div id="post-preview"/>
+                </w:tab>
+            </w:tab-panel>
+
+        </section>
+    </content>
+
+</moya>

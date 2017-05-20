@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moya xmlns="http://moyaproject.com"
+      xmlns:let="http://moyaproject.com/let"
+      xmlns:db="http://moyaproject.com/db"
+      xmlns:forms="http://moyaproject.com/forms">
+
+    <mountpoint name="main">
+        <!-- A simple default view to start you off -->
+        <url route="/{slug}" view="#view.page" name="page"/>
+        <url route="/{slug}/edit" view="#view.page.edit" name="page_edit"/>
+    </mountpoint>
+
+
+    <view libname="view.page" content="#content.page">
+        <db:get model="#Page" let:slug=".url.slug" dst="page"/>
+    </view>
+
+    <view libname="view.page.edit" content="#content.page.edit">
+        <db:get model="#Page" let:slug=".url.slug" dst="page"/>
+        <forms:get form="#form.page.edit" let:page="page" src="page" dst="form"/>
+    </view>
+
+</moya>

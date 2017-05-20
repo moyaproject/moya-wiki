@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moya xmlns="http://moyaproject.com">
+
+    <model xmlns="http://moyaproject.com/db" libname="Page" repr="page ${slug}">
+        <string name="slug" length="100" null="no" blank="no" index="yes"/>
+        <foreign-key name="current" model="#Content" blank="yes" picker="#admintable.content"/>
+    </model>
+
+    <model xmlns="http://moyaproject.com/db" libname="Content" repr="content '${title or '#' + str:id}'">
+        <foreign-key model="#Page" name="page" owned="yes" null="no" backref="content" picker="#admintable.pages"/>
+        <string name="title" length="100" null="no" />
+        <string name="markup" length="20" default="markdown" />
+        <text name="content" null="no" default="" />
+        <text name="content_text" label="Content as text" null="yes" />
+        <datetime name="updated_date" null="yes" />
+        <integer name="revision" null="no" default="0" />
+        <boolean name="published" default="no"/>
+        <foreign-key name="author" model="auth#User" null="no" />
+
+        <one-to-one name="images" model="moya.imagelib#Collection" null="yes" owner="yes" blank="yes"
+            picker="moya.imagelib#admintable.collections"/>
+    </model>
+
+</moya>

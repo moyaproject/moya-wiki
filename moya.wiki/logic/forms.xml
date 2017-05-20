@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moya xmlns="http://moyaproject.com"
+    xmlns:m="http://moyaproject.com"
+    xmlns:img="http://moyaproject.com/imagelib">
+
+
+
+    <form libname="form.page.edit" style="horizontal" xmlns="http://moyaproject.com/forms">
+        <input name="title" label="Post Title" maxlength="100" required="yes"/>
+
+        <!--
+        <radio-group name="type" label="Type" inline="yes" choices="choices:enum:'#enum.post.type'" initial="'text'" />
+    -->
+
+        <m:get-markup-choices dst="markups" />
+        <select name="markup" label="Markup" choices="markups" initial=".app.settings.default_markup"/>
+        <text-area name="content" label="Content" libname="form.post.editor" rows="20"/>
+        <input label="Tags" name="tagtext" maxlength="200" required="no" placeholder="comma separated tags"/>
+
+        <field label="Images">
+            <img:manager collection="page.images" picker="yes" picker_text="insert"/>
+        </field>
+
+        <hidden-input name="page_id" initial="page.id"/>
+        <actions>
+            <submit-button visual="primary" name="action" clicked="edit" text="Update Page"/>
+            <submit-button visual="default" name="action" clicked="cancel" text="Discard Draft"/>
+        </actions>
+
+    </form>
+
+</moya>
