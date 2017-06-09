@@ -8,31 +8,15 @@
 
     <admin:module xmlns="http://moyaproject.com/admin"
         slug="moya-wiki" title="Wiki" description="Manage your Wiki">
-
         <link to="#admintable.pages"/>
         <link to="#admintable.content"/>
-
+        <link to="#admintable.tags"/>
     </admin:module>
 
     <table xmlns="http://moyaproject.com/admin" libname="admintable.pages"
         slug="pages" title="Pages" model="#Page"
         search="#Page.title == q or #Page.title icontains q" >
         <column title="Slug" link="yes" sort="title">${object.slug}</column>
-
-        <!--
-        <column title="Published Date" sort="published_date">
-            ${object.published_date ? localize:object.published_date: ''}
-        </column>
-        <column title="Updated Date" sort="updated_date">
-            ${object.updated_date ? localize:object.updated_date: ''}
-        </column>
-    -->
-        <!--
-        <column title="URL" sort="slug">
-            <moya:get-url name="showpost" let:blog="object.blog.slug" let:slug="object.slug" dst="post_url" />
-            <html:a href="${post_url}">${post_url}</html:a>
-        </column>
-    -->
     </table>
 
     <table  xmlns="http://moyaproject.com/admin" libname="admintable.content"
@@ -49,5 +33,13 @@
             ${object.updated_date ? localize:object.updated_date: ''}
         </column>
     </table>
+
+    <table xmlns="http://moyaproject.com/admin" libname="admintable.tags"
+        slug="tag" title="Tags" model="#Tag"
+        search="#Tag.name == q">
+        <column title="Name" link="yes" sort="name">${object.name}</column>
+        <column title="Count" sort="count">${object.count}</column>
+    </table>
+
 
 </moya>

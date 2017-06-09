@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <moya xmlns="http://moyaproject.com"
-      xmlns:let="http://moyaproject.com/let">
+      xmlns:let="http://moyaproject.com/let"
+      xmlns:db="http://moyaproject.com/db"
+      xmlns:wiki="http://moyaproject.com/wiki">
     <!-- define your tags here -->
+
+    <tag name="create-page" synopsis="create a new wiki page">
+        <signature>
+            <attribute name="slug" empty="no">Page slug</attribute>
+        </signature>
+        <db:get-or-create model="#Page" let:slug="slug" dst="page">
+            <db:get-or-create model="#Content" dst="content"
+                let:author=".user"
+                let:page="page"
+                let:title="capitalize:slug"
+                let:revision="0"/>
+            <let page.current="content"/>
+        </db:get-or-create>
+
+    </tag>
+
+    <tag name="new-revision">
+        <signature>
+            <attribute name="page" empty="no">Page</attribute>
+            <attribute name="base" type="integer">Base revision</attribute>
+            <attribute name="revision" type="integer">Revision number</attribute>
+        </signature>
+        <let base="page.revision" if="not base"/>
+        <let revision="base+1" if="not revision"/>
+        <db:get-or-create model="#Content" dst="content"
+            let:page="page"
+            let:revision="revision"
+            let:author=".user"
+            let:title="capitalize:page.slug"/>
+    </tag>
 
 </moya>

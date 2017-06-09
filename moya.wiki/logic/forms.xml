@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <moya xmlns="http://moyaproject.com"
     xmlns:m="http://moyaproject.com"
-    xmlns:img="http://moyaproject.com/imagelib">
+    xmlns:img="http://moyaproject.com/imagelib"
+    xmlns:w="http://moyaproject.com/widgets">
 
 
 
     <form libname="form.page.edit" style="horizontal" xmlns="http://moyaproject.com/forms">
+
         <input name="title" label="Post Title" maxlength="100" required="yes"/>
 
         <!--
@@ -17,8 +19,8 @@
         <text-area name="content" label="Content" libname="form.post.editor" rows="20"/>
         <input label="Tags" name="tagtext" maxlength="200" required="no" placeholder="comma separated tags"/>
 
-        <field label="Images">
-            <img:manager collection="page.images" picker="yes" picker_text="insert"/>
+        <field label="Images" if="page.current.image">
+            <img:manager collection="page.current.images" picker="yes" picker_text="insert"/>
         </field>
 
         <hidden-input name="page_id" initial="page.id"/>
@@ -26,6 +28,18 @@
             <submit-button visual="primary" name="action" clicked="edit" text="Update Page"/>
             <submit-button visual="default" name="action" clicked="cancel" text="Discard Draft"/>
         </actions>
+
+    </form>
+
+    <form libname="form.page.create" xmlns="http://moyaproject.com/forms">
+
+        <w:dialog>
+            <m:markdown>Are you sure you want to create wiki page *${slug}*?</m:markdown>
+            <w:dialog-buttons>
+                <submit-button name="create" clicked="yes" text="Create Page"/>
+                <submit-button name="create" clicked="no" text="Cancel"/>
+            </w:dialog-buttons>
+        </w:dialog>
 
     </form>
 

@@ -6,19 +6,27 @@
         <foreign-key name="current" model="#Content" blank="yes" picker="#admintable.content"/>
     </model>
 
-    <model xmlns="http://moyaproject.com/db" libname="Content" repr="content '${title or '#' + str:id}'">
+    <model xmlns="http://moyaproject.com/db" libname="Content" repr="content '${title or '#' + str:id}' r${revision}">
         <foreign-key model="#Page" name="page" owned="yes" null="no" backref="content" picker="#admintable.pages"/>
         <string name="title" length="100" null="no" />
         <string name="markup" length="20" default="markdown" />
         <text name="content" null="no" default="" />
         <text name="content_text" label="Content as text" null="yes" />
+        <datetime name="published_date" null="yes" />
         <datetime name="updated_date" null="yes" />
         <integer name="revision" null="no" default="0" />
         <boolean name="published" default="no"/>
         <foreign-key name="author" model="auth#User" null="no" />
-
+        <text name="tagtext" null="no" default="" />
         <one-to-one name="images" model="moya.imagelib#Collection" null="yes" owner="yes" blank="yes"
             picker="moya.imagelib#admintable.collections"/>
+    </model>
+
+    <model xmlns="http://moyaproject.com/db" libname="Tag" repr="${name}">
+        <string name="name" length="100" null="no" />
+        <string name="slug" length="100" null="no" />
+        <integer name="count" null="no" default="0" />
+        <many-to-many model="#Page" name="posts" backref="tags" picker="#admintable.pages" backpicker="#admintable.tags"/>
     </model>
 
 </moya>

@@ -20,6 +20,14 @@
 
     </content>
 
+
+    <content libname="content.page.create" extends="#content.base">
+        <title>Create ${.request.url}</title>
+        <section name="body">
+          <render src="form"/>
+        </section>
+    </content>
+
     <content libname="content.page.edit" extends="#content.base">
         <title>Edit ${page.title}</title>
         <section name="body" merge="prepend">
