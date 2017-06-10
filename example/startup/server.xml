@@ -46,14 +46,17 @@
         <install name="jsonrpc" lib="moya.jsonrpc"/>
         <install name="wysihtml5" lib="moya.wysihtml5"/>
         <install name="recaptcha" lib="moya.google.recaptcha"/>
+        <install name="thumbnail" lib="moya.thumbnail"/>
 
-    <!--Added by 'moya start library'-->
-<import location="../moya.wiki" priority="100"/>
-<install name="wiki" lib="moya.wiki" mount="/"/>
+        <install name="uploads" lib="moya.static" mount="/uploads/"/>
 
-<!--added by moya-pm--><install name="imagelib" lib="moya.imagelib"/>
-<!--added by moya-pm--><mount app="imagelib" url="/images"/>
-<!--added by moya-pm--><install name="widgetsextra" lib="moya.widgets.extra"/>
+
+        <import location="../moya.wiki" priority="100"/>
+        <install name="wiki" lib="moya.wiki" mount="/"/>
+
+        <install name="imagelib" lib="moya.imagelib"/>
+        <mount app="imagelib" url="/images"/>
+        <install name="widgetsextra" lib="moya.widgets.extra"/>
 </server>
 
 </moya>
