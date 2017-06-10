@@ -3,18 +3,20 @@
 
     <model xmlns="http://moyaproject.com/db" libname="Page" repr="page ${slug}">
         <string name="slug" length="100" null="no" blank="no" index="yes"/>
-        <foreign-key name="current" model="#Content" blank="yes" picker="#admintable.content"/>
+        <foreign-key name="current" model="#Content" blank="yes" null="yes"
+            picker="#admintable.content"/>
     </model>
 
     <model xmlns="http://moyaproject.com/db" libname="Content" repr="content '${title or '#' + str:id}' r${revision}">
-        <foreign-key model="#Page" name="page" owned="yes" null="no" backref="content" picker="#admintable.pages"/>
+        <foreign-key name="page" model="#Page" null="yes" backref="content" picker="#admintable.content"/>
+        <foreign-key name="parent" model="#Content" blank="yes" picker="#admintable.content"/>
         <string name="title" length="100" null="no" />
         <string name="markup" length="20" default="markdown" />
         <text name="content" null="no" default="" />
         <text name="content_text" label="Content as text" null="yes" />
         <datetime name="published_date" null="yes" />
         <datetime name="updated_date" null="yes" />
-        <integer name="revision" null="no" default="0" />
+        <integer name="revision" null="yes" default="None" />
         <boolean name="published" default="no"/>
         <foreign-key name="author" model="auth#User" null="no" />
         <text name="tagtext" null="no" default="" />

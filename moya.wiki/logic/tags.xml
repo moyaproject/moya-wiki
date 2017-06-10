@@ -9,30 +9,34 @@
         <signature>
             <attribute name="slug" empty="no">Page slug</attribute>
         </signature>
-        <db:get-or-create model="#Page" let:slug="slug" dst="page">
-            <db:get-or-create model="#Content" dst="content"
-                let:author=".user"
-                let:page="page"
-                let:title="capitalize:slug"
-                let:revision="0"/>
-            <let page.current="content"/>
-        </db:get-or-create>
-
+        <return>
+            <db:get-or-create model="#Page" dst="page"
+                let:slug="slug"
+                initial="title=title:slug">
+            </db:get-or-create>
+        </return>
     </tag>
 
-    <tag name="new-revision">
+    <tag name="create-draft" synopsis="create a new draft">
         <signature>
             <attribute name="page" empty="no">Page</attribute>
-            <attribute name="base" type="integer">Base revision</attribute>
-            <attribute name="revision" type="integer">Revision number</attribute>
+            <attribute name="base" required="no">Base Content</attribute>
         </signature>
-        <let base="page.revision" if="not base"/>
-        <let revision="base+1" if="not revision"/>
+
+        <let base="page.current" if="not base"/>
         <db:get-or-create model="#Content" dst="content"
             let:page="page"
-            let:revision="revision"
-            let:author=".user"
-            let:title="capitalize:page.slug"/>
+            let:title="title:page.slug"
+            let:author=".user">
+            <db:create model="moya.imagelib#Collection"
+                dst="content.images"
+                let:slug="page.slug"/>
+        </db:get-or-create>
+        <let if="base"
+            content.content="base.content"
+            content.title="base.title"
+            content.markup="base.markup"/>
+        <return value="content"/>
     </tag>
 
 </moya>

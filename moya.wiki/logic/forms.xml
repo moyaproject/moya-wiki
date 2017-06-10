@@ -16,17 +16,17 @@
 
         <m:get-markup-choices dst="markups" />
         <select name="markup" label="Markup" choices="markups" initial=".app.settings.default_markup"/>
+        <field label="Images">
+            <img:manager collection="content.images" picker="yes" picker_text="insert"/>
+        </field>
         <text-area name="content" label="Content" libname="form.post.editor" rows="20"/>
         <input label="Tags" name="tagtext" maxlength="200" required="no" placeholder="comma separated tags"/>
-
-        <field label="Images" if="page.current.image">
-            <img:manager collection="page.current.images" picker="yes" picker_text="insert"/>
-        </field>
 
         <hidden-input name="page_id" initial="page.id"/>
         <actions>
             <submit-button visual="primary" name="action" clicked="edit" text="Update Page"/>
-            <submit-button visual="default" name="action" clicked="cancel" text="Discard Draft"/>
+            <submit-button visual="default" name="action" clicked="discard" text="Discard Draft"/>
+            <submit-button visual="dafault" name="action" clicked="publish" text="Publish"/>
         </actions>
 
     </form>

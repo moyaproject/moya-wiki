@@ -10,7 +10,6 @@
         <url route="/{slug}" view="#view.page" name="page"/>
         <url route="/{slug}/create" view="#view.page.create" name="page_create"/>
         <url route="/{slug}/edit" view="#view.page.edit" name="page_edit"/>
-
     </mountpoint>
 
 
@@ -26,7 +25,8 @@
             let:slug=".url.slug" />
         <forms:validate src="form">
             <redirect name="page" let:slug=".url.slug" if="form.data.create!='yes'"/>
-            <wiki:create-page slug=".url.slug"/>
+            <wiki:create-page slug=".url.slug" dst="page"/>
+            <log-debug>Created ${page}</log-debug>
             <redirect name="page_edit" let:slug=".url.slug"/>
         </forms:validate>
     </view>
@@ -34,8 +34,9 @@
     <view libname="view.page.edit" content="#content.page.edit" requires=".user">
         <db:get model="#Page" let:slug=".url.slug" dst="page"/>
         <redirect name="page_create" let:slug=".url.slug" if="not page"/>
+        <wiki:create-draft page="page" dst="content"/>
         <forms:get form="#form.page.edit" src="page.current" dst="form"
-            let:page="page" let:content="page.content"/>
+            let:page="page" let:content="content"/>
         <forms:validate src="form">
             <forms:apply src="form" dst="page"/>
             <redirect name="page" let:slug="page.slug"/>
