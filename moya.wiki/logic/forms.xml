@@ -17,7 +17,7 @@
         <m:get-markup-choices dst="markups" />
         <select name="markup" label="Markup" choices="markups" initial=".app.settings.default_markup"/>
         <field label="Images">
-            <img:manager collection="content.images" picker="yes" picker_text="insert"/>
+            <img:manager collection="revision.images" picker="yes" picker_text="insert"/>
         </field>
         <text-area name="content" label="Content" libname="form.post.editor" rows="20"/>
         <input label="Tags" name="tagtext" maxlength="200" required="no" placeholder="comma separated tags"/>

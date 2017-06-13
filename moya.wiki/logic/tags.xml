@@ -20,23 +20,30 @@
     <tag name="create-draft" synopsis="create a new draft">
         <signature>
             <attribute name="page" empty="no">Page</attribute>
-            <attribute name="base" required="no">Base Content</attribute>
+            <attribute name="base" required="no">Base Revision</attribute>
         </signature>
 
+        <str dst="initial_content">
+# This page has no content, please supply some!
+        </str>
+
         <let base="page.current" if="not base"/>
-        <db:get-or-create model="#Content" dst="content"
+        <db:get-or-create model="#Revision" dst="revision"
             let:page="page"
             let:title="title:page.slug"
             let:author=".user">
             <db:create model="moya.imagelib#Collection"
-                dst="content.images"
+                dst="revision.images"
                 let:slug="page.slug"/>
+            <let
+                revision.content="initial_content"
+                revision.version="0"/>
         </db:get-or-create>
         <let if="base"
-            content.content="base.content"
-            content.title="base.title"
-            content.markup="base.markup"/>
-        <return value="content"/>
+            revision.content="base.content"
+            revision.title="base.title or title:page.slug"
+            revision.markup="base.markup"/>
+        <return value="revision"/>
     </tag>
 
 </moya>

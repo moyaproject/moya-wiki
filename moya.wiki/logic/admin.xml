@@ -9,7 +9,7 @@
     <admin:module xmlns="http://moyaproject.com/admin"
         slug="moya-wiki" title="Wiki" description="Manage your Wiki">
         <link to="#admintable.pages"/>
-        <link to="#admintable.content"/>
+        <link to="#admintable.revision"/>
         <link to="#admintable.tags"/>
     </admin:module>
 
@@ -19,9 +19,9 @@
         <column title="Slug" link="yes" sort="title">${object.slug}</column>
     </table>
 
-    <table  xmlns="http://moyaproject.com/admin" libname="admintable.content"
-        slug="content" title="Content" model="#Content"
-        search="#Content.title icontains q">
+    <table  xmlns="http://moyaproject.com/admin" libname="admintable.revision"
+        slug="revision" title="Revisions" model="#Revision"
+        search="#Revision.title icontains q">
         <column title="Title" link="yes" sort="title">${object.title}</column>
         <column title="Published?" sort="published">
             <check ticked="object.published" />

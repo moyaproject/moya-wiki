@@ -11,7 +11,7 @@
     <content libname="content.base" template="base.html">
         <title>${page.title}</title>
         <section name="body">
-            <markdown>${page.current.content}</markdown>
+            <markdown>${revision.content}</markdown>
         </section>
     </content>
 
