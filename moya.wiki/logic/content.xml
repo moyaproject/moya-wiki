@@ -11,13 +11,26 @@
     <content libname="content.base" template="base.html">
         <title>${page.title}</title>
         <section name="body">
-            <markdown>${revision.content}</markdown>
+
         </section>
     </content>
 
 
     <content libname="content.page" extends="#content.base">
+        <section name="body">
+            <w:info>
+                <markdown>No page here. Would you like to [Create it](${.urls.wiki.page_create(slug=.url.slug)})?</markdown>
+            </w:info>
+            <markdown>${revision.content}</markdown>
+        </section>
+    </content>
 
+    <content libname="content.page.missing" extends="#content.base">
+        <section name="body">
+            <w:info>
+                <markdown>No page here. Would you like to [Create it](${.urls.wiki.page_create(slug=.url.slug)})?</markdown>
+            </w:info>
+        </section>
     </content>
 
 

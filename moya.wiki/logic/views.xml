@@ -14,13 +14,18 @@
 
 
     <view libname="view.page" content="#content.page">
-        <breakpoint/>
+
         <db:get model="#Page" let:slug=".url.slug" dst="page"/>
         <let revision="page.current"/>
         <db:get model="#Revision" src="page.revisions" dst="revision"
             if=".request.GET.r"
             let:page="page"
             let:version="int:.request.GET.r" />
+
+        <serve-content
+            content="#content.page.missing"
+            if="not version"
+            status="NOT_FOUND"/>
 
     </view>
 
