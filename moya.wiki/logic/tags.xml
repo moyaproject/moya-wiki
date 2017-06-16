@@ -19,7 +19,7 @@
 
     <tag name="create-draft" synopsis="create a new draft">
         <signature>
-            <attribute name="page" empty="no">Page</attribute>
+            <attribute name="page" missing="no">Page</attribute>
             <attribute name="base" required="no">Base Revision</attribute>
         </signature>
 
@@ -28,22 +28,46 @@
         </str>
 
         <let base="page.current" if="not base"/>
-        <db:get-or-create model="#Revision" dst="revision"
+        <db:get-or-create
+            dst="revision"
+            model="#Revision"
+            initial="title=title:page.slug, content=initial_content, base=base"
+            let:version="None"
             let:page="page"
-            let:title="title:page.slug"
             let:author=".user">
-            <db:create model="moya.imagelib#Collection"
+            <db:create
+                model="moya.imagelib#Collection"
                 dst="revision.images"
                 let:slug="page.slug"/>
             <let
-                revision.content="initial_content"
-                revision.version="0"/>
+                if="base"
+                revision.content="base.content"
+                revision.title="base.title or title:page.slug"
+                revision.markup="base.markup"/>
         </db:get-or-create>
-        <let if="base"
-            revision.content="base.content"
-            revision.title="base.title or title:page.slug"
-            revision.markup="base.markup"/>
         <return value="revision"/>
     </tag>
+
+    <tag name="publish" synopsis="publish draft">
+        <signature>
+            <attribute name="page" missing="no">Page</attribute>
+            <attribute name="revision" missing="no">Revision</attribute>
+        </signature>
+        <db:get
+            model="#Revision"
+            let:page="page"
+            let:published="yes"
+            orderby="-version"
+            dst="newest" />
+        <let
+            revision.version="(newest.version or 0) + 1"
+            revision.published="yes"
+            revision.published_date=".now"
+            revision.updated_date=".now"
+            page.current="revision"
+            if="not revision.published"/>
+        <log-debug>Published ${page} r${version}</log-debug>
+    </tag>
+
 
 </moya>

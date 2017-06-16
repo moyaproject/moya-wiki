@@ -8,33 +8,60 @@
     <mountpoint name="main">
         <!-- A simple default view to start you off -->
         <url route="/{slug}" view="#view.page" name="page"/>
-        <url route="/{slug}/create" view="#view.page.create" name="page_create"/>
-        <url route="/{slug}/edit" view="#view.page.edit" name="page_edit"/>
+        <url route="/{slug}/r{integer:version}" view="#view.page" name="page_version"/>
+        <url route="/{slug}/drafts/{username}" view="#view.page" name="page_draft"/>
+        <url route="/{slug}" mount="#mountpoint.main" name="admin">
+            <forbidden if="not .user"/>
+        </url>
     </mountpoint>
 
+    <mountpoint libname="mountpoint.main">
+        <url route="/create" view="#view.page.create" name="page_create"/>
+        <url route="/edit" view="#view.page.edit" name="page_edit"/>
+        <url route="/publish" view="#view.page.publish" name="page_publish"/>
+        <url route="/discard" view="#view.page.discard" name="page_discard"/>
+    </mountpoint>
 
     <view libname="view.page" content="#content.page">
+        <db:get
+            model="#Page"
+            let:slug=".url.slug"
+            dst="page"/>
 
-        <db:get model="#Page" let:slug=".url.slug" dst="page"/>
-        <let revision="page.current"/>
-        <db:get model="#Revision" src="page.revisions" dst="revision"
-            if=".request.GET.r"
-            let:page="page"
-            let:version="int:.request.GET.r" />
-
+        <if test=".url.version">
+            <db:get-required
+                model="#Revision"
+                src="page.revisions"
+                dst="revision"
+                if=".url.version"
+                let:page="page"
+                let:version="int:.url.version"/>
+        </if>
+        <elif test=".url.username">
+            <db:get-required
+                model="#Revision"
+                src="page.revisions"
+                dst="revision"
+                filter="#Revision.author.username==.url.username"
+                let:page="page"
+                let:version="None"/>
+        </elif>
+        <else>
+            <let revision="page.current"/>
+        </else>
         <serve-content
             content="#content.page.missing"
-            if="not version"
+            if="not revision"
             status="NOT_FOUND"/>
-
     </view>
 
-    <view libname="view.page.create" content="#content.page.create" requires=".user">
+    <view libname="view.page.create" content="#content.page.create">
         <db:if-exists model="#Page" let:slug=".url.slug">
             <redirect name="page_edit" let:slug=".url.slug"/>
         </db:if-exists>
+        <get-url name="page" let:slug=".url.slug" dst="page_url"/>
         <forms:get form="#form.page.create" dst="form"
-            let:slug=".url.slug" />
+            let:slug=".url.slug" let:page_url="page_url" />
         <forms:validate src="form">
             <redirect name="page" let:slug=".url.slug" if="form.data.create!='yes'"/>
             <wiki:create-page slug=".url.slug" dst="page"/>
@@ -43,15 +70,62 @@
         </forms:validate>
     </view>
 
-    <view libname="view.page.edit" content="#content.page.edit" requires=".user">
+    <view libname="view.page.edit" content="#content.page.edit">
         <db:get model="#Page" let:slug=".url.slug" dst="page"/>
         <redirect name="page_create" let:slug=".url.slug" if="not page"/>
         <wiki:create-draft page="page" dst="revision"/>
-        <forms:get form="#form.page.edit" src="revision" dst="form"
-            let:page="page" let:revision="revision"/>
+        <forms:get
+            form="#form.page.edit"
+            src="revision"
+            dst="form"
+            let:page="page"
+            let:revision="revision"/>
         <forms:validate src="form">
             <forms:apply src="form" dst="revision"/>
-            <redirect name="page" let:slug="page.slug"/>
+            <switch on="form.data.action">
+                <case>publish</case>
+                <redirect name="page_publish" let:slug="page.slug"/>
+
+                <case>save</case>
+                <redirect-to url="${revision.url}"/>
+
+                <case>discard</case>
+                <redirect name="page_discard" let:slug=".url.slug"/>
+
+                <default-case/>
+                <redirect name="page_edit" let:slug="page.slug"/>
+            </switch>
+        </forms:validate>
+    </view>
+
+    <macro docname="get_draft">
+        <db:get-required model="#Page" let:slug=".url.slug" dst="page"/>
+        <db:get-required model="#Revision" let:page="page" let:version="None" dst="revision"/>
+        <get-url name="page" let:slug=".url.slug" dst="page_url"/>
+    </macro>
+
+    <view libname="view.page.publish" content="#content.page.publish">
+        <defer to="get_draft"/>
+        <forms:get form="#form.page.publish" dst="form"
+            let:page="page" let:revision="revision" let:page_url="page_url"/>
+        <forms:validate src="form">
+            <let publish="form.data.publish=='yes'"/>
+            <redirect name="page_edit" let:slug="page.slug" if="not publish"/>
+            <let revision.comment="form.data.comment"/>
+            <wiki:publish page="page" revision="revision"/>
+            <redirect-to url="${revision.url}"/>
+        </forms:validate>
+    </view>
+
+    <view libname="view.page.discard" content="#content.page.discard">
+        <defer to="get_draft"/>
+        <forms:get form="#form.page.discard" dst="form"
+            let:page="page" let:revision="revision" let:page_url="page_url"/>
+        <forms:validate src="form">
+            <let discard="form.data.discard=='yes'"/>
+            <redirect name="page_edit" let:slug="page.slug" if="not discard"/>
+            <db:delete src="revision"/>
+            <redirect name="page" let:slug=".url.slug"/>
         </forms:validate>
     </view>
 

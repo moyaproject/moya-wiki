@@ -2,17 +2,12 @@
 <moya xmlns="http://moyaproject.com"
     xmlns:m="http://moyaproject.com"
     xmlns:img="http://moyaproject.com/imagelib"
-    xmlns:w="http://moyaproject.com/widgets">
-
-
+    xmlns:w="http://moyaproject.com/widgets"
+    xmlns:html="http://moyaproject.com/html">
 
     <form libname="form.page.edit" style="horizontal" xmlns="http://moyaproject.com/forms">
 
         <input name="title" label="Post Title" maxlength="100" required="yes"/>
-
-        <!--
-        <radio-group name="type" label="Type" inline="yes" choices="choices:enum:'#enum.post.type'" initial="'text'" />
-    -->
 
         <m:get-markup-choices dst="markups" />
         <select name="markup" label="Markup" choices="markups" initial=".app.settings.default_markup"/>
@@ -24,23 +19,44 @@
 
         <hidden-input name="page_id" initial="page.id"/>
         <actions>
-            <submit-button visual="primary" name="action" clicked="edit" text="Update Page"/>
+            <submit-button visual="primary" name="action" clicked="save" text="Save"/>
+            <submit-button visual="default" name="action" clicked="publish" text="Publish"/>
             <submit-button visual="default" name="action" clicked="discard" text="Discard Draft"/>
-            <submit-button visual="dafault" name="action" clicked="publish" text="Publish"/>
         </actions>
 
     </form>
 
     <form libname="form.page.create" xmlns="http://moyaproject.com/forms">
-
         <w:dialog>
-            <m:markdown>Are you sure you want to create wiki page *${slug}*?</m:markdown>
+            <m:markdown>Are you sure you want to create wiki page *${.url.slug}*?</m:markdown>
             <w:dialog-buttons>
                 <submit-button name="create" clicked="yes" text="Create Page"/>
                 <submit-button name="create" clicked="no" text="Cancel"/>
             </w:dialog-buttons>
         </w:dialog>
+    </form>
 
+    <form libname="form.page.publish" xmlns="http://moyaproject.com/forms">
+        <w:dialog>
+            <m:markdown>Are you sure you want to *publish* wiki page **${.url.slug}**?</m:markdown>
+            <html:p>
+                <input maxlength="100" name="comment" placeholder="Revision comment"/>
+            </html:p>
+            <w:dialog-buttons>
+                <submit-button visual="primary" name="publish" clicked="yes" text="Publish Page"/>
+                <submit-button visual="default" name="publish" clicked="no" text="Cancel"/>
+            </w:dialog-buttons>
+        </w:dialog>
+    </form>
+
+    <form libname="form.page.discard" xmlns="http://moyaproject.com/forms">
+        <w:dialog>
+            <m:md>Are you sure you want to *discard* draft wiki page **${.url.slug}**?</m:md>
+            <w:dialog-buttons>
+                <submit-button visual="primary" name="discard" clicked="yes" text="Discard Draft"/>
+                <submit-button visual="default" name="discard" clicked="no" text="Cancel"/>
+            </w:dialog-buttons>
+        </w:dialog>
     </form>
 
 </moya>

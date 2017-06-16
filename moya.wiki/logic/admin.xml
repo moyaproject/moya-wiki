@@ -1,5 +1,5 @@
 <moya xmlns="http://moyaproject.com"
-      xmlns:moya="http://moyaproject.com"
+      xmlns:m="http://moyaproject.com"
       xmlns:let="http://moyaproject.com/let"
       xmlns:auth="http://moyaproject.com/auth"
       xmlns:admin="http://moyaproject.com/admin"
@@ -19,10 +19,16 @@
         <column title="Slug" link="yes" sort="title">${object.slug}</column>
     </table>
 
-    <table  xmlns="http://moyaproject.com/admin" libname="admintable.revision"
+    <table xmlns="http://moyaproject.com/admin" libname="admintable.revision"
         slug="revision" title="Revisions" model="#Revision"
         search="#Revision.title icontains q">
         <column title="Title" link="yes" sort="title">${object.title}</column>
+        <column title="Version" sort="version">
+            <m:if test="isnone:object.version">
+                <m:markdown>*draft*</m:markdown>
+            </m:if>
+            <m:else>${object.version}</m:else>
+        </column>
         <column title="Published?" sort="published">
             <check ticked="object.published" />
         </column>

@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<moya xmlns="http://moyaproject.com">
+<moya xmlns="http://moyaproject.com"
+    xmlns:let="http://moyaproject.com/let"
+    xmlns:m="http://moyaproject.com">
 
     <model xmlns="http://moyaproject.com/db" libname="Page" repr="page ${slug}">
         <string name="slug" length="100" null="no" blank="no" index="yes"/>
         <foreign-key name="current" model="#Revision" blank="yes" null="yes"
             picker="#admintable.revision"/>
+
+        <property name="edit_url">
+            <return xmlns="http://moyaproject.com">
+                <get-url name="page" let:slug="object.slug"/>
+            </return>
+        </property>
+        <property name="edit_url">
+            <return xmlns="http://moyaproject.com">
+                <get-url name="page_edit" let:slug="object.slug"/>
+            </return>
+        </property>
+        <property name="publish_url">
+            <return xmlns="http://moyaproject.com">
+                <get-url name="page_publish" let:slug="object.slug"/>
+            </return>
+        </property>
     </model>
 
     <model xmlns="http://moyaproject.com/db" libname="Revision" repr="content '${title or '#' + str:id}' r${version}">
-        <foreign-key name="page" model="#Page" null="yes" backref="revisions" picker="#admintable.content"/>
+        <foreign-key name="page" model="#Page" null="yes" backref="revisions" picker="#admintable.revision"/>
         <foreign-key name="parent" model="#Revision" blank="yes" picker="#admintable.revision"/>
         <string name="title" length="100" null="no" />
         <string name="markup" length="20" default="markdown" />
@@ -16,12 +34,29 @@
         <text name="content_text" label="Content as text" null="yes" />
         <datetime name="published_date" null="yes" />
         <datetime name="updated_date" null="yes" />
-        <integer name="version" null="yes" default="None" />
+        <integer name="version" null="yes" blank="yes" default="None" />
         <boolean name="published" default="no"/>
-        <foreign-key name="author" model="auth#User" null="no" />
+        <foreign-key name="author" model="auth#User" null="no" picker="auth#admintable.users"/>
         <text name="tagtext" null="no" default="" />
         <one-to-one name="images" model="moya.imagelib#Collection" null="yes" owner="yes" blank="yes"
             picker="moya.imagelib#admintable.collections"/>
+        <property name="is_draft" expression="isnone:version"/>
+        <property name="url">
+            <return xmlns="http://moyaproject.com" if="object.page.slug">
+                <let slug="object.page.slug"/>
+                <if test="object.page.current==object">
+                    <get-url name="page" let:slug="slug"/>
+                </if>
+                <elif test="object.is_draft">
+                    <get-url name="page_draft" let:slug="slug" let:username="object.author.username"/>
+                </elif>
+                <else>
+                    <get-url name="page_version" let:slug="slug" let:version="object.version"/>
+                </else>
+            </return>
+        </property>
+
+        <text name="comment" default=""/>
     </model>
 
     <model xmlns="http://moyaproject.com/db" libname="Tag" repr="${name}">

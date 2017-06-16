@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <moya xmlns="http://moyaproject.com"
-      xmlns:let="http://moyaproject.com/let">
-    <!-- define your widgets here -->
+      xmlns:let="http://moyaproject.com/let"
+      xmlns:db="http://moyaproject.com/db"
+      xmlns:w="http://moyaproject.com/widgets">
+
+    <widget name="admin-panel" template="widgets/admin-panel.html">
+        <signature>
+            <attribute name="page">Page object</attribute>
+            <attribute name="revision" default="None">Revision object</attribute>
+        </signature>
+        <db:query src="page.revisions" filter="#Revision.version != None" orderby="-version" dst="revisions" collect="list"/>
+        <db:query src="page.revisions" filter="#Revision.version == None" orderby="#Revision.author.username" dst="drafts" collect="list"/>
+        <let revisions="drafts + revisions"/>
+    </widget>
 
 
 </moya>

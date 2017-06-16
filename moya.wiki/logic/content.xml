@@ -5,45 +5,68 @@
       xmlns:forms="http://moyaproject.com/forms"
       xmlns:html="http://moyaproject.com/html"
       xmlns:w="http://moyaproject.com/widgets"
-      xmlns:img="http://moyaproject.com/imagelib">
+      xmlns:img="http://moyaproject.com/imagelib"
+      xmlns:wiki="http://moyaproject.com/wiki">
 
-
-    <content libname="content.base" template="base.html">
+    <content libname="content.base" template="page.html">
         <title>${page.title}</title>
-        <section name="body">
-
+        <section name="main">
+        </section>
+        <section name="admin_links" merge="append" if=".permissions.admin">
+            <w:link name="page_edit" let:slug=".url.slug" icon="edit">Edit Page</w:link>
         </section>
     </content>
 
-
     <content libname="content.page" extends="#content.base">
-        <section name="body">
-            <w:info>
-                <markdown>No page here. Would you like to [Create it](${.urls.wiki.page_create(slug=.url.slug)})?</markdown>
+        <section name="main">
+            <w:info if="revision.is_draft and revision.author==.user">
+                <md>
+This is your *draft*, and is only visible to you.
+
+You can **[publish](${page.publish_url})** the draft now, or make more **[edits](${page.edit_url})**.
+                </md>
             </w:info>
-            <markdown>${revision.content}</markdown>
+            <md>${revision.content}</md>
+        </section>
+        <section name="side">
+           <wiki:admin-panel page="page" revision="revision"/>
         </section>
     </content>
 
     <content libname="content.page.missing" extends="#content.base">
-        <section name="body">
+        <title>Page Not Found</title>
+        <section name="main">
+            <get-url name="page_create" let:slug=".url.slug" dst="create_url"/>
             <w:info>
-                <markdown>No page here. Would you like to [Create it](${.urls.wiki.page_create(slug=.url.slug)})?</markdown>
+                <md>No page here. Would you like to [Create it](${create_url})?</md>
             </w:info>
         </section>
     </content>
 
-
     <content libname="content.page.create" extends="#content.base">
-        <title>Create ${.request.url}</title>
-        <section name="body">
+        <title>Create ${page_url}</title>
+        <section name="main">
+          <render src="form"/>
+        </section>
+    </content>
+
+    <content libname="content.page.publish" extends="#content.base">
+        <title>Publish ${page_url}</title>
+        <section name="main">
+          <render src="form"/>
+        </section>
+    </content>
+
+    <content libname="content.page.discard" extends="#content.base">
+        <title>Publish ${page_url}</title>
+        <section name="main">
           <render src="form"/>
         </section>
     </content>
 
     <content libname="content.page.edit" extends="#content.base">
-        <title>Edit ${page.title}</title>
-        <section name="body" merge="prepend">
+        <title>Edit ${revision.title}</title>
+        <section name="main" merge="prepend">
 
             <w:tab-panel active="edit" id="postedit">
                 <w:tab title="Edit Post" id="edit">
