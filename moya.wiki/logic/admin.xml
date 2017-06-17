@@ -32,11 +32,11 @@
         <column title="Published?" sort="published">
             <check ticked="object.published" />
         </column>
-        <column title="Published Date" sort="published_date">
-            ${object.published_date ? localize:object.published_date: ''}
+        <column title="Published Time" sort="published_time">
+            ${object.published_time ? localize:object.published_time: ''}
         </column>
         <column title="Updated Date" sort="updated_date">
-            ${object.updated_date ? localize:object.updated_date: ''}
+            ${object.updated_time ? localize:object.updated_time: ''}
         </column>
     </table>
 

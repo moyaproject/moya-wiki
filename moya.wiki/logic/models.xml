@@ -8,22 +8,9 @@
         <foreign-key name="current" model="#Revision" blank="yes" null="yes"
             picker="#admintable.revision"/>
         <datetime name="updated_time" auto="yes"/>
-
-        <property name="edit_url">
-            <return xmlns="http://moyaproject.com">
-                <get-url name="page" let:slug="object.slug"/>
-            </return>
-        </property>
-        <property name="edit_url">
-            <return xmlns="http://moyaproject.com">
-                <get-url name="page_edit" let:slug="object.slug"/>
-            </return>
-        </property>
-        <property name="publish_url">
-            <return xmlns="http://moyaproject.com">
-                <get-url name="page_publish" let:slug="object.slug"/>
-            </return>
-        </property>
+        <property name="url" expression=".appurls.page(slug=slug)"/>
+        <property name="edit_url" expression=".appurls.admin(slug=slug).page_edit"/>
+        <property name="publish_url" expression=".appurls.admin(slug=slug).page_publish"/>
     </model>
 
     <model xmlns="http://moyaproject.com/db" libname="Revision" repr="content '${title or '#' + str:id}' r${version}">
@@ -33,8 +20,8 @@
         <string name="markup" length="20" default="markdown" />
         <text name="content" null="no" default="" />
         <text name="content_text" label="Content as text" null="yes" />
-        <datetime name="published_date" null="yes" />
-        <datetime name="updated_date" null="yes" />
+        <datetime name="published_time" null="yes" />
+        <datetime name="updated_time" null="yes" />
         <integer name="version" null="yes" blank="yes" default="None" />
         <boolean name="published" default="no"/>
         <foreign-key name="author" model="auth#User" null="no" picker="auth#admintable.users"/>

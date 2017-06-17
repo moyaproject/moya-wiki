@@ -20,6 +20,7 @@
         <url route="/edit" view="#view.page.edit" name="page_edit"/>
         <url route="/publish" view="#view.page.publish" name="page_publish"/>
         <url route="/discard" view="#view.page.discard" name="page_discard"/>
+        <url route="/r{integer:version}/make-default" view="#view.page.default" name="page_default"/>
     </mountpoint>
 
     <view libname="view.page" content="#content.page">
@@ -36,6 +37,7 @@
                 if=".url.version"
                 let:page="page"
                 let:version="int:.url.version"/>
+            <redirect name="page" let:slug=".url.slug" if="page.current==revision"/>
         </if>
         <elif test=".url.username and .user">
             <db:get-required
@@ -129,4 +131,33 @@
         </forms:validate>
     </view>
 
+    <view libname="view.page.default" content="#content.page.default">
+
+        <db:get
+            model="#Page"
+            let:slug=".url.slug"
+            dst="page"/>
+        <db:get-required
+            model="#Revision"
+            src="page.revisions"
+            dst="revision"
+            if=".url.version"
+            let:page="page"
+            let:version="int:.url.version"/>
+        <forms:get form="#form.page.default" dst="form"
+            let:page="page" let:revision="revision"/>
+        <forms:validate src="form">
+            <let default="form.data.default=='yes'"/>
+            <redirect
+                if="not default"
+                name="page_version"
+                let:slug=".url.slug"
+                let:version=".url.version"/>
+            <let page.current="revision"/>
+            <redirect
+                name="page_version"
+                let:slug=".url.slug"
+                let:version=".url.version"/>
+        </forms:validate>
+    </view>
 </moya>

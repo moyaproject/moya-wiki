@@ -64,6 +64,13 @@ You can **[publish](${page.publish_url})** the draft now, or make more **[edits]
         </section>
     </content>
 
+    <content libname="content.page.default" extends="#content.base">
+        <title>Make ${revision.version} default</title>
+        <section name="main">
+          <render src="form"/>
+        </section>
+    </content>
+
     <content libname="content.page.edit" extends="#content.base">
         <title>Edit ${revision.title}</title>
         <section name="main" merge="prepend">

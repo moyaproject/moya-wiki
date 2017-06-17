@@ -7,9 +7,16 @@
         <!-- Extract text from posts, for searching -->
         <let
             revision="signal.data.object"
-            revision.updated_date=".now"
-            revision.page.updated_date=".now"
-        />
+            revision.updated_time=".now"
+            revision.page.updated_time=".now"/>
+        <log-debug>${revision.page} was updated</log-debug>
     </handle>
 
+    <handle signal="db.pre-update,db.pre-insert" sender="#Page">
+        <!-- Extract text from posts, for searching -->
+        <let
+            page="signal.data.object"
+            page.updated_time=".now"/>
+        <log-debug>${page} was updated</log-debug>
+    </handle>
 </moya>

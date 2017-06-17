@@ -1,0 +1,14 @@
+<select onchange="window.location.href=this.value">
+{#- Drafts first, sorted alphabetically, then descending order of version -#}
+{%- for r in sortedby:[revisions, `[bool:version, -(version or 0), author.username]`] %}
+
+    <option{% attrib value=r.url, selected=r==revision ? "selected" : None %}>
+    {%- if r.is_draft %}${r.author.username}'s draft {% else %}r${r.version}{% endif %}
+    {%- if r.comment %} &ndash; {% summarize chars 24 mark '&hellip;' %}${r.comment}{% end %}{% endif -%}
+    {%- if r==page.current %}*{% endif -%}
+    </option>
+
+{%- endfor %}
+</select>
+
+<a href="{% url 'page_default' with slug=.url.slug, version=revision.version %}">make current</a>

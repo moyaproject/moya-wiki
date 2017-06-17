@@ -62,9 +62,10 @@
         <let
             revision.version="(newest.version or 0) + 1"
             revision.published="yes"
-            revision.published_date=".now"
-            revision.updated_date=".now"
+            revision.published_time=".now"
+            revision.updated_time=".now"
             page.current="revision"
+            page.updated_time=".now"
             if="not revision.published"/>
         <log-debug>Published ${page} r${version}</log-debug>
     </tag>

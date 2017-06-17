@@ -5,7 +5,7 @@
       xmlns:w="http://moyaproject.com/widgets">
 
     <widget name="admin-panel" template="widgets/admin-panel.html"
-        cachekey="${page.updated_date}-${revision.updated_date}" cachefor="1h">
+        cachekey="${page.updated_time}.${revision.updated_time}" cachefor="1h">
         <signature>
             <attribute name="page">Page object</attribute>
             <attribute name="revision" default="None">Revision object</attribute>

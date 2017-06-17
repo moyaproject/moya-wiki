@@ -59,4 +59,16 @@
         </w:dialog>
     </form>
 
+    <form libname="form.page.default" xmlns="http://moyaproject.com/forms">
+        <w:dialog>
+            <m:md>
+                Are you sure you want to make r${revision.version} the default page?
+            </m:md>
+            <w:dialog-buttons>
+                <submit-button visual="primary" name="default" clicked="yes" text="Make Default"/>
+                <submit-button visual="default" name="default" clicked="no" text="Cancel"/>
+            </w:dialog-buttons>
+        </w:dialog>
+    </form>
+
 </moya>
