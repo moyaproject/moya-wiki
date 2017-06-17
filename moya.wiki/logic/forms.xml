@@ -31,7 +31,7 @@
             <m:markdown>Are you sure you want to create wiki page *${.url.slug}*?</m:markdown>
             <w:dialog-buttons>
                 <submit-button name="create" clicked="yes" text="Create Page"/>
-                <submit-button name="create" clicked="no" text="Cancel"/>
+                <submit-button visual="default" name="create" clicked="no" text="Cancel"/>
             </w:dialog-buttons>
         </w:dialog>
     </form>

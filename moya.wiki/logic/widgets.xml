@@ -4,15 +4,13 @@
       xmlns:db="http://moyaproject.com/db"
       xmlns:w="http://moyaproject.com/widgets">
 
-    <widget name="admin-panel" template="widgets/admin-panel.html">
+    <widget name="admin-panel" template="widgets/admin-panel.html"
+        cachekey="${page.updated_date}-${revision.updated_date}" cachefor="1h">
         <signature>
             <attribute name="page">Page object</attribute>
             <attribute name="revision" default="None">Revision object</attribute>
         </signature>
-        <db:query src="page.revisions" filter="#Revision.version != None" orderby="-version" dst="revisions" collect="list"/>
-        <db:query src="page.revisions" filter="#Revision.version == None" orderby="#Revision.author.username" dst="drafts" collect="list"/>
-        <let revisions="drafts + revisions"/>
+        <let revisions="list:page.revisions"/>
     </widget>
-
 
 </moya>

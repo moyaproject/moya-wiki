@@ -37,7 +37,7 @@
                 let:page="page"
                 let:version="int:.url.version"/>
         </if>
-        <elif test=".url.username">
+        <elif test=".url.username and .user">
             <db:get-required
                 model="#Revision"
                 src="page.revisions"

@@ -9,7 +9,7 @@
       xmlns:wiki="http://moyaproject.com/wiki">
 
     <content libname="content.base" template="page.html">
-        <title>${page.title}</title>
+        <title>${revision.title}</title>
         <section name="main">
         </section>
         <section name="admin_links" merge="append" if=".permissions.admin">

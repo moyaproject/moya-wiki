@@ -7,6 +7,7 @@
         <string name="slug" length="100" null="no" blank="no" index="yes"/>
         <foreign-key name="current" model="#Revision" blank="yes" null="yes"
             picker="#admintable.revision"/>
+        <datetime name="updated_time" auto="yes"/>
 
         <property name="edit_url">
             <return xmlns="http://moyaproject.com">

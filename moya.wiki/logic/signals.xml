@@ -3,11 +3,13 @@
     xmlns:let="http://moyaproject.com/let"
     xmlns:db="http://moyaproject.com/db">
 
-    <!-- define signals here -->
-    <!--
-    <handle signal="moya.auth.post-login">
-        <echo>${signal.data.user} just logged in</echo>
+    <handle signal="db.pre-update,db.pre-insert" sender="#Revision">
+        <!-- Extract text from posts, for searching -->
+        <let
+            revision="signal.data.object"
+            revision.updated_date=".now"
+            revision.page.updated_date=".now"
+        />
     </handle>
-    -->
 
 </moya>
