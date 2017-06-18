@@ -16,21 +16,23 @@
 
     <content libname="content.page" extends="#content.base">
         <section name="main">
-            <w:info if="revision.is_draft and revision.author==.user">
+            <w:warning if="revision.is_draft and revision.author==.user">
                 <md>
 This is your *draft*, and is only visible to you.
 
-You can **[publish](${page.publish_url})** the draft now, or make more **[edits](${page.edit_url})**.
+Use the admin panel to *publish* your changes.
                 </md>
-            </w:info>
+            </w:warning>
             <md>${revision.content}</md>
         </section>
         <section name="side">
            <wiki:admin-panel page="page" revision="revision"/>
         </section>
+        <!--
         <section name="admin_links" merge="append" if=".permissions.admin">
             <w:link name="page_edit" let:slug=".url.slug" icon="edit">Edit Page</w:link>
         </section>
+        -->
     </content>
 
     <content libname="content.front" extends="#content.base">

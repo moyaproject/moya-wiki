@@ -1,14 +1,41 @@
-<select onchange="window.location.href=this.value">
-{#- Drafts first, sorted alphabetically, then descending order of version -#}
-{%- for r in sortedby:[revisions, `[bool:version, -(version or 0), author.username]`] %}
+<div class="panel panel-info"">
+  <div class="panel-heading">Admin</div>
+  <div class="panel-body">
 
-    <option{% attrib value=r.url, selected=r==revision ? "selected" : None %}>
-    {%- if r.is_draft %}${r.author.username}'s draft {% else %}r${r.version}{% endif %}
-    {%- if r.comment %} &ndash; {% summarize chars 24 mark '&hellip;' %}${r.comment}{% end %}{% endif -%}
-    {%- if r==page.current %}*{% endif -%}
-    </option>
+      <select onchange="window.location.href=this.value" class="form-control">
+      {#- Drafts first, sorted alphabetically, then descending order of version -#}
+      {%- for r in sortedby:[revisions, `[bool:version, -(version or 0), author.username]`] %}
+        <option{% attrib value=r.url, selected=r==revision ? "selected" : None %}>
+          {%- if r.is_draft %}${r.author.username}'s draft {% else %}r${r.version}{% endif %}
+          {%- if r.comment %} &ndash; {% summarize chars 24 mark '&hellip;' %}${r.comment}{% end %}{% endif -%}
+          {%- if r==page.current %}*{% endif -%}
+        </option>
+      {%- endfor %}
+      </select>
 
-{%- endfor %}
-</select>
+  </div>
 
-<a href="{% url 'page_default' with slug=.url.slug, version=revision.version %}">make current</a>
+  <ul class="list-group">
+    {% if revision.is_draft %}
+    <a class="list-group-item" href="{% url 'page_publish' with slug=page.slug %}">
+      <i class="glyphicon glyphicon-thumbs-up"></i> Publish Page
+    </a>
+    {% endif %}
+    {% if not revision.is_draft and not revision.is_default %}
+    <a class="list-group-item" href="{% url 'page_default' with slug=page.slug, version=revision.version %}">
+       <i class="glyphicon glyphicon-ok"></i> Make Default
+    </a>
+    {% end %}
+    <a class="list-group-item" href="{% url 'page_edit' with slug=page.slug %}">
+      <i class="glyphicon glyphicon-pencil"></i> Edit Page
+    </a>
+    <li class="list-group-item">
+
+      <form action=".">
+        <input id="input-new-page" name="new" type="text" class="form-control" placeholder="New Page Title">
+      </form>
+    </li>
+
+  </ul>
+
+</div>

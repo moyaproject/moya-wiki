@@ -43,6 +43,7 @@
                 </else>
             </return>
         </property>
+        <property name="is_default" expression="page.current.id==id"/>
 
         <text name="comment" default=""/>
     </model>

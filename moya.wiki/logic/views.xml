@@ -7,7 +7,7 @@
 
     <mountpoint name="main">
         <!-- A simple default view to start you off -->
-        <url route="/" view="#view.page" name="page_Front"/>
+        <url route="/" view="#view.page" name="page_front"/>
         <url route="/{slug}" view="#view.page" name="page"/>
         <url route="/{slug}/r{integer:version}" view="#view.page" name="page_version"/>
         <url route="/{slug}/drafts/{username}" view="#view.page" name="page_draft"/>
@@ -34,7 +34,7 @@
     <view libname="view.page" content="#content.page">
         <redirect
             if=".request.GET.new"
-            name="page_edit"
+            name="page_create"
             let:slug="slug:.request.GET.new"/>
 
         <let slug=".url.slug or .app.settings.default_page"/>
@@ -79,7 +79,7 @@
         </db:if-exists>
         <get-url name="page" let:slug=".url.slug" dst="page_url"/>
         <forms:get form="#form.page.create" dst="form"
-            let:slug=".url.slug" let:page_url="page_url" />
+            let:slug=".url.slug" let:purl="page_url" />
         <forms:validate src="form">
             <redirect name="page" let:slug=".url.slug" if="form.data.create!='yes'"/>
             <wiki:create-page slug=".url.slug" dst="page"/>
