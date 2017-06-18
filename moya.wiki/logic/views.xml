@@ -7,6 +7,7 @@
 
     <mountpoint name="main">
         <!-- A simple default view to start you off -->
+        <url route="/" view="#view.page" name="page_Front"/>
         <url route="/{slug}" view="#view.page" name="page"/>
         <url route="/{slug}/r{integer:version}" view="#view.page" name="page_version"/>
         <url route="/{slug}/drafts/{username}" view="#view.page" name="page_draft"/>
@@ -23,10 +24,24 @@
         <url route="/r{integer:version}/make-default" view="#view.page.default" name="page_default"/>
     </mountpoint>
 
+    <view libname="view.front" content="#content.front">
+        <redirect
+            if=".request.GET.new"
+            name="page_edit"
+            let:slug="slug:.request.GET.new"/>
+    </view>
+
     <view libname="view.page" content="#content.page">
+        <redirect
+            if=".request.GET.new"
+            name="page_edit"
+            let:slug="slug:.request.GET.new"/>
+
+        <let slug=".url.slug or .app.settings.default_page"/>
+
         <db:get
             model="#Page"
-            let:slug=".url.slug"
+            let:slug="slug"
             dst="page"/>
 
         <if test=".url.version">
@@ -37,7 +52,7 @@
                 if=".url.version"
                 let:page="page"
                 let:version="int:.url.version"/>
-            <redirect name="page" let:slug=".url.slug" if="page.current==revision"/>
+            <redirect name="page" let:slug="slug" if="page.current==revision"/>
         </if>
         <elif test=".url.username and .user">
             <db:get-required
@@ -54,7 +69,8 @@
         <serve-content
             content="#content.page.missing"
             if="not revision"
-            status="NOT_FOUND"/>
+            status="NOT_FOUND"
+            let:slug="slug"/>
     </view>
 
     <view libname="view.page.create" content="#content.page.create">

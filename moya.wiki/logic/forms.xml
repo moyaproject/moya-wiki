@@ -6,9 +6,7 @@
     xmlns:html="http://moyaproject.com/html">
 
     <form libname="form.page.edit" style="horizontal" xmlns="http://moyaproject.com/forms">
-
         <input name="title" label="Post Title" maxlength="100" required="yes"/>
-
         <m:get-markup-choices dst="markups" />
         <select name="markup" label="Markup" choices="markups" initial=".app.settings.default_markup"/>
         <field label="Images">
@@ -16,14 +14,19 @@
         </field>
         <text-area name="content" label="Content" libname="form.post.editor" rows="20"/>
         <input label="Tags" name="tagtext" maxlength="200" required="no" placeholder="comma separated tags"/>
-
         <hidden-input name="page_id" initial="page.id"/>
         <actions>
             <submit-button visual="primary" name="action" clicked="save" text="Save"/>
             <submit-button visual="default" name="action" clicked="publish" text="Publish"/>
             <submit-button visual="default" name="action" clicked="discard" text="Discard Draft"/>
         </actions>
+    </form>
 
+    <form libname="form.page.new" csrf="no" action="." method="get" style="simple" xmlns="http://moyaproject.com/forms">
+        <w:well>
+            <m:md>New Wiki page</m:md>
+            <input maxlength="100" name="new" placeholder="page title"/>
+        </w:well>
     </form>
 
     <form libname="form.page.create" xmlns="http://moyaproject.com/forms">

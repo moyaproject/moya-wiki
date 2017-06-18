@@ -12,9 +12,6 @@
         <title>${revision.title}</title>
         <section name="main">
         </section>
-        <section name="admin_links" merge="append" if=".permissions.admin">
-            <w:link name="page_edit" let:slug=".url.slug" icon="edit">Edit Page</w:link>
-        </section>
     </content>
 
     <content libname="content.page" extends="#content.base">
@@ -31,12 +28,28 @@ You can **[publish](${page.publish_url})** the draft now, or make more **[edits]
         <section name="side">
            <wiki:admin-panel page="page" revision="revision"/>
         </section>
+        <section name="admin_links" merge="append" if=".permissions.admin">
+            <w:link name="page_edit" let:slug=".url.slug" icon="edit">Edit Page</w:link>
+        </section>
+    </content>
+
+    <content libname="content.front" extends="#content.base">
+        <title>Wiki</title>
+        <forms:get form="#form.page.new" dst="form"/>
+        <section name="main">
+            <md>
+# Welcome to your wiki!
+            </md>
+        </section>
+        <section name="side">
+            <render src="form"/>
+        </section>
     </content>
 
     <content libname="content.page.missing" extends="#content.base">
         <title>Page Not Found</title>
         <section name="main">
-            <get-url name="page_create" let:slug=".url.slug" dst="create_url"/>
+            <get-url name="page_create" let:slug="slug" dst="create_url"/>
             <w:info>
                 <md>No page here. Would you like to [Create it](${create_url})?</md>
             </w:info>
