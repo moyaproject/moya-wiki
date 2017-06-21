@@ -13,7 +13,7 @@
         <property name="publish_url" expression=".appurls.admin(slug=slug).page_publish"/>
     </model>
 
-    <model xmlns="http://moyaproject.com/db" libname="Revision" repr="content '${title or '#' + str:id}' r${version}">
+    <model xmlns="http://moyaproject.com/db" libname="Revision" repr="revision '${page.slug}' ${revision_label}">
         <foreign-key name="page" model="#Page" null="yes" backref="revisions" picker="#admintable.revision"/>
         <foreign-key name="parent" model="#Revision" blank="yes" picker="#admintable.revision"/>
         <string name="title" length="100" null="no" />
@@ -29,6 +29,7 @@
         <one-to-one name="images" model="moya.imagelib#Collection" null="yes" owner="yes" blank="yes"
             picker="moya.imagelib#admintable.collections"/>
         <property name="is_draft" expression="isnone:version"/>
+        <property name="revision_label" expression="is_draft ? sub:'${author.username}’s draft' : sub:'r${version}'"/>
         <property name="url">
             <return xmlns="http://moyaproject.com" if="object.page.slug">
                 <let slug="object.page.slug"/>
@@ -52,7 +53,7 @@
         <string name="name" length="100" null="no" />
         <string name="slug" length="100" null="no" />
         <integer name="count" null="no" default="0" />
-        <many-to-many model="#Page" name="posts" backref="tags" picker="#admintable.pages" backpicker="#admintable.tags"/>
+        <many-to-many model="#Page" name="pages" backref="tags" picker="#admintable.pages" backpicker="#admintable.tags"/>
     </model>
 
 </moya>

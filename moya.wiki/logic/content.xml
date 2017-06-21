@@ -10,6 +10,8 @@
 
     <content libname="content.base" template="page.html">
         <title>${revision.title}</title>
+        <include-js path="js/wiki.js"/>
+        <include-js path="js/jsonrpc.js" from="moya.jsonrpc" />
         <section name="main">
         </section>
     </content>
@@ -23,7 +25,7 @@ This is your *draft*, and is only visible to you.
 Use the admin panel to *publish* your changes.
                 </md>
             </w:warning>
-            <md>${revision.content}</md>
+            <wiki:revision page="page" revision="revision"/>
         </section>
         <section name="side">
            <wiki:admin-panel page="page" revision="revision"/>

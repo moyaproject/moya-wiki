@@ -8,10 +8,11 @@
     <mountpoint name="main">
         <!-- A simple default view to start you off -->
         <url route="/" view="#view.page" name="page_front"/>
-        <url route="/{slug}" view="#view.page" name="page"/>
-        <url route="/{slug}/r{integer:version}" view="#view.page" name="page_version"/>
-        <url route="/{slug}/drafts/{username}" view="#view.page" name="page_draft"/>
-        <url route="/{slug}" mount="#mountpoint.main" name="admin">
+        <url route="/jsonrpc" view="#jsonrpc.interface" name="rpc"/>
+        <url route="/wiki/{slug}" view="#view.page" name="page"/>
+        <url route="/wiki/{slug}/r{integer:version}" view="#view.page" name="page_version"/>
+        <url route="/wiki/{slug}/drafts/{username}" view="#view.page" name="page_draft"/>
+        <url route="/wiki/{slug}" mount="#mountpoint.main" name="admin">
             <forbidden if="not .user"/>
         </url>
     </mountpoint>
@@ -91,7 +92,7 @@
     <view libname="view.page.edit" content="#content.page.edit">
         <db:get model="#Page" let:slug=".url.slug" dst="page"/>
         <redirect name="page_create" let:slug=".url.slug" if="not page"/>
-        <wiki:create-draft page="page" dst="revision"/>
+        <wiki:create-draft page="page" base="page.current" dst="revision"/>
         <forms:get
             form="#form.page.edit"
             src="revision"
@@ -160,6 +161,7 @@
             if=".url.version"
             let:page="page"
             let:version="int:.url.version"/>
+        <wiki:update-tags page="page" tags="revision.tagtext" />
         <forms:get form="#form.page.default" dst="form"
             let:page="page" let:revision="revision"/>
         <forms:validate src="form">

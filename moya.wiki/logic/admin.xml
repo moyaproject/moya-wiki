@@ -17,25 +17,24 @@
         slug="pages" title="Pages" model="#Page"
         search="#Page.title == q or #Page.title icontains q" >
         <column title="Slug" link="yes" sort="title">${object.slug}</column>
+        <column title="Revision">${object.current.revision_label}</column>
     </table>
 
     <table xmlns="http://moyaproject.com/admin" libname="admintable.revision"
         slug="revision" title="Revisions" model="#Revision"
         search="#Revision.title icontains q">
         <column title="Title" link="yes" sort="title">${object.title}</column>
-        <column title="Version" sort="version">
-            <m:if test="isnone:object.version">
-                <m:markdown>*draft*</m:markdown>
-            </m:if>
-            <m:else>${object.version}</m:else>
+        <column title="Version" sort="#Revision.version,#Revision.author.username">
+           ${object.revision_label}
         </column>
+        <column title="Author"><m:render src="object.author"/></column>
         <column title="Published?" sort="published">
             <check ticked="object.published" />
         </column>
         <column title="Published Time" sort="published_time">
             ${object.published_time ? localize:object.published_time: ''}
         </column>
-        <column title="Updated Date" sort="updated_date">
+        <column title="Updated Time" sort="updated_date">
             ${object.updated_time ? localize:object.updated_time: ''}
         </column>
     </table>

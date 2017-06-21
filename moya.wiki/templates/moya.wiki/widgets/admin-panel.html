@@ -6,8 +6,8 @@
       {#- Drafts first, sorted alphabetically, then descending order of version -#}
       {%- for r in sortedby:[revisions, `[bool:version, -(version or 0), author.username]`] %}
         <option{% attrib value=r.url, selected=r==revision ? "selected" : None %}>
-          {%- if r.is_draft %}${r.author.username}'s draft {% else %}r${r.version}{% endif %}
-          {%- if r.comment %} &ndash; {% summarize chars 24 mark '&hellip;' %}${r.comment}{% end %}{% endif -%}
+          ${r.revision_label}
+          {%- if r.comment %}&nbsp;&ndash; {% summarize chars 24 mark '&hellip;' %}${r.comment}{% end %}{% endif -%}
           {%- if r==page.current %}*{% endif -%}
         </option>
       {%- endfor %}
@@ -31,7 +31,7 @@
     </a>
     <li class="list-group-item">
 
-      <form action=".">
+      <form action="">
         <input id="input-new-page" name="new" type="text" class="form-control" placeholder="New Page Title">
       </form>
     </li>
