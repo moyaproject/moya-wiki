@@ -91,16 +91,7 @@ Use the admin panel to *publish* your changes.
     <content libname="content.page.edit" extends="#content.base">
         <title>Edit ${revision.title}</title>
         <section name="main" merge="prepend">
-
-            <w:tab-panel active="edit" id="postedit">
-                <w:tab title="Edit Post" id="edit">
-                    <render src="form"/>
-                </w:tab>
-                <w:tab title="Preview" id="preview">
-                    <html:div id="post-preview"/>
-                </w:tab>
-            </w:tab-panel>
-
+            <render src="form"/>
         </section>
     </content>
 
