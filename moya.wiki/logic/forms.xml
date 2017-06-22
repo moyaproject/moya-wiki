@@ -5,21 +5,22 @@
     xmlns:w="http://moyaproject.com/widgets"
     xmlns:html="http://moyaproject.com/html">
 
-    <form id="wiki" libname="form.page.edit" style="basic" xmlns="http://moyaproject.com/forms">
+    <form id="wiki" libname="form.page.edit" style="horizontal" xmlns="http://moyaproject.com/forms">
         <hidden-input name="revision_id" initial="revision.id" />
+        <hidden-input name="page_id" initial="page.id"/>
         <input name="title" label="Title" maxlength="100" required="yes"/>
-        <m:get-markup-choices dst="markups" />
+        <input label="Tags" name="tagtext" maxlength="200" required="no" placeholder="comma separated tags"/>
 
-        <radio-group inline="yes" name="markup" initial=".app.settings.default_markup">
-            <radio on="markdown" text="Markdown"/>
-            <radio on="text" text="Text"/>
+        <radio-group label="Markup" inline="yes" name="markup" initial=".app.settings.default_markup">
             <radio on="bbcode" text="BBCode"/>
             <radio on="html" text="HTML"/>
+            <radio on="markdown" text="Markdown"/>
+            <radio on="text" text="Text"/>
         </radio-group>
-        <field>
+        <field label="Images">
             <img:manager collection="revision.images" picker="yes" picker_text="insert" on_pick="on_pick_post_images"/>
         </field>
-        <field>
+        <field label="Content">
             <w:tab-panel>
                 <w:tab title="Markup">
                     <text-area style="simple" name="content" label="Content" libname="form.post.editor" rows="20"/>
@@ -29,8 +30,7 @@
                 </w:tab>
             </w:tab-panel>
         </field>
-        <input label="Tags" name="tagtext" maxlength="200" required="no" placeholder="comma separated tags"/>
-        <hidden-input name="page_id" initial="page.id"/>
+
         <actions>
             <submit-button visual="success" name="action" clicked="publish" text="Publish"/>
             <submit-button visual="default" name="action" clicked="discard" text="Discard Draft"/>
