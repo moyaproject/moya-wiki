@@ -34,6 +34,7 @@
         <actions>
             <submit-button visual="success" name="action" clicked="publish" text="Publish"/>
             <submit-button visual="default" name="action" clicked="discard" text="Discard Draft"/>
+            <submit-button visual="default" name="action" clicked="reset" text="Reset"/>
         </actions>
     </form>
 
@@ -73,6 +74,27 @@
             <w:dialog-buttons>
                 <submit-button visual="primary" name="discard" clicked="yes" text="Discard Draft"/>
                 <submit-button visual="default" name="discard" clicked="no" text="Cancel"/>
+            </w:dialog-buttons>
+        </w:dialog>
+    </form>
+
+    <form libname="form.page.reset" xmlns="http://moyaproject.com/forms">
+        <w:dialog>
+            <m:md>
+                Are you sure you want to *reset* draft wiki page?
+
+                Changes will be lost and content will be copied from the following revision:
+            </m:md>
+            <html:p>
+                <select name="version" initial="revision.parent.version">
+                    <m:for src="rsortedby:[page.revisions, `version`]" dst="r" filter="not r.is_draft">
+                        <option value="${r.version}">${r.revision_label}</option>
+                    </m:for>
+                </select>
+            </html:p>
+            <w:dialog-buttons>
+                <submit-button visual="primary" name="reset" clicked="yes" text="Reset Draft"/>
+                <submit-button visual="default" name="reset" clicked="no" text="Cancel"/>
             </w:dialog-buttons>
         </w:dialog>
     </form>

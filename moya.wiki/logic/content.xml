@@ -81,6 +81,13 @@ Use the admin panel to *publish* your changes.
         </section>
     </content>
 
+    <content libname="content.page.reset" extends="#content.base">
+        <title>Reset Draft</title>
+        <section name="main">
+          <render src="form"/>
+        </section>
+    </content>
+
     <content libname="content.page.default" extends="#content.base">
         <title>Make ${revision.version} default</title>
         <section name="main">

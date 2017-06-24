@@ -32,7 +32,7 @@
         <db:get-or-create
             dst="revision"
             model="#Revision"
-            initial="title=title:page.slug, content=strip:initial_content, base=base"
+            initial="title=title:page.slug, content=strip:initial_content, parent=base"
             let:version="None"
             let:page="page"
             let:author=".user">
