@@ -46,7 +46,7 @@
 
     <form libname="form.page.create" xmlns="http://moyaproject.com/forms">
         <w:dialog>
-            <m:markdown>Are you sure you want to create wiki page *${.url.slug}*?</m:markdown>
+            <m:md>Are you sure you want to create wiki page *${.url.slug}*?</m:md>
             <w:dialog-buttons>
                 <submit-button name="create" clicked="yes" text="Create Page"/>
                 <submit-button visual="default" name="create" clicked="no" text="Cancel"/>
@@ -56,7 +56,7 @@
 
     <form libname="form.page.publish" xmlns="http://moyaproject.com/forms">
         <w:dialog>
-            <m:markdown>Are you sure you want to *publish* wiki page **${.url.slug}**?</m:markdown>
+            <m:md>Are you sure you want to *publish* wiki page **${.url.slug}**?</m:md>
             <html:p>
                 <input maxlength="100" name="comment" placeholder="Revision comment"/>
             </html:p>

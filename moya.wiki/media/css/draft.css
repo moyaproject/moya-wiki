@@ -1,0 +1,51 @@
+
+.wiki-draft-status
+{
+
+}
+
+.wiki-draft-status .draft-changed
+{
+    position:fixed;
+    left:1em;
+    bottom:4px;
+    z-index:100;
+    opacity:0;
+}
+
+.wiki-draft-status .draft-saved
+{
+    position:fixed;
+    left:1em;
+    bottom:4px;
+    z-index:100;
+    opacity: 1;
+    visibility:hidden;
+}
+
+.wiki-draft-status .draft-saving
+{
+    position:fixed;
+    left:1em;
+    bottom:4px;
+    z-index:100;
+    opacity:0;
+}
+
+
+.wiki-draft-status.changed .draft-changed
+{
+    opacity:1;
+}
+
+.wiki-draft-status.saved .draft-saved
+{
+    visibility: visible;
+    opacity: 0;
+    transition: opacity 2s 1s;
+}
+
+.wiki-draft-status.saving .draft-saving
+{
+    opacity:1;
+}

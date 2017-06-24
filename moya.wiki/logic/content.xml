@@ -90,8 +90,10 @@ Use the admin panel to *publish* your changes.
 
     <content libname="content.page.edit" extends="#content.base">
         <title>Edit ${revision.title}</title>
+        <include-css path="css/draft.css"/>
         <section name="main" merge="prepend">
             <render src="form"/>
+            <node template="editor/draft.html"/>
         </section>
     </content>
 
