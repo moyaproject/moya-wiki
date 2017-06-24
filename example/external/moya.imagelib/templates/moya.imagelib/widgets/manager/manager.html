@@ -23,6 +23,12 @@
                 <i class="glyphicon glyphicon-cloud-upload"></i>
                 <span class="hidden-xs">Upload</span>
             </button>
+            {%- if picker %}
+            <button disabled="disabled" type="button" title="${picker_text}" class="btn btn-success moya-imglib-action moya-imglib-action-pick" data-action="pick">
+                <i class="glyphicon glyphicon-flag"></i>
+                <span class="hidden-xs">${picker_text}</span>
+            </button>
+            {%- endif %}
         </div>
 
         <div class="moya-imglib-select">

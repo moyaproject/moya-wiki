@@ -20,7 +20,7 @@
             <radio on="text" text="Text"/>
         </radio-group>
         <field label="Images">
-            <img:manager collection="revision.images" picker="yes" picker_text="insert" on_pick="on_pick_post_images"/>
+            <img:manager collection="revision.images" picker="yes" picker_text="Insert image" on_pick="on_pick_post_images"/>
         </field>
         <field label="Content">
             <w:tab-panel>
