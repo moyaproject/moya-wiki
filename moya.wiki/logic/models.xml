@@ -29,7 +29,7 @@
         <one-to-one name="images" model="moya.imagelib#Collection" null="yes" owner="yes" blank="yes"
             picker="moya.imagelib#admintable.collections"/>
         <property name="is_draft" expression="isnone:version"/>
-        <property name="revision_label" expression="is_draft ? sub:'${author.username}’s draft' : sub:'r${version} ${comment}'"/>
+        <property name="revision_label" expression="is_draft ? sub:'${author.username}’s draft' : sub:'r${version}'"/>
         <property name="url">
             <return xmlns="http://moyaproject.com" if="object.page.slug">
                 <let slug="object.page.slug"/>

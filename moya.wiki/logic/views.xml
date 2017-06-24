@@ -15,6 +15,9 @@
         <url route="/wiki/{slug}" mount="#mountpoint.main" name="admin">
             <forbidden if="not .user"/>
         </url>
+        <url route="/new" view="#view.page.new" name="page_new">
+            <forbidden if="not .user"/>
+        </url>
     </mountpoint>
 
     <mountpoint libname="mountpoint.main">
@@ -73,6 +76,19 @@
             if="not revision"
             status="NOT_FOUND"
             let:slug="slug"/>
+    </view>
+
+    <view libname="view.page.new" content="#content.page.new">
+        <forms:get form="#form.page.new" dst="form"/>
+        <forms:validate src="form">
+            <db:create
+                dst="page"
+                model="#Page"
+                let:slug="form.data.slug"
+            />
+            <wiki:create-draft page="page" dst="revision"/>
+            <redirect name="page_edit" let:slug="page.slug"/>
+        </forms:validate>
     </view>
 
     <view libname="view.page.create" content="#content.page.create">

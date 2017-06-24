@@ -39,7 +39,6 @@ Use the admin panel to *publish* your changes.
 
     <content libname="content.front" extends="#content.base">
         <title>Wiki</title>
-        <forms:get form="#form.page.new" dst="form"/>
         <section name="main">
             <md>
 # Welcome to your wiki!
@@ -60,39 +59,34 @@ Use the admin panel to *publish* your changes.
         </section>
     </content>
 
-    <content libname="content.page.create" extends="#content.base">
+    <content libname="content.page.form" extends="#content.base">
+        <section name="main">
+          <render src="form"/>
+        </section>
+    </content>
+
+    <content libname="content.page.new" extends="#content.page.form">
+        <title>New Page</title>
+    </content>
+
+    <content libname="content.page.create" extends="#content.page.form">
         <title>Create ${page_url}</title>
-        <section name="main">
-          <render src="form"/>
-        </section>
     </content>
 
-    <content libname="content.page.publish" extends="#content.base">
+    <content libname="content.page.publish" extends="#content.page.form">
         <title>Publish ${page_url}</title>
-        <section name="main">
-          <render src="form"/>
-        </section>
     </content>
 
-    <content libname="content.page.discard" extends="#content.base">
+    <content libname="content.page.discard" extends="#content.page.form">
         <title>Publish ${page_url}</title>
-        <section name="main">
-          <render src="form"/>
-        </section>
     </content>
 
-    <content libname="content.page.reset" extends="#content.base">
+    <content libname="content.page.reset" extends="#content.page.form">
         <title>Reset Draft</title>
-        <section name="main">
-          <render src="form"/>
-        </section>
     </content>
 
-    <content libname="content.page.default" extends="#content.base">
+    <content libname="content.page.default" extends="#content.page.form">
         <title>Make ${revision.version} default</title>
-        <section name="main">
-          <render src="form"/>
-        </section>
     </content>
 
     <content libname="content.page.edit" extends="#content.base">

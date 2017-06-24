@@ -3,7 +3,9 @@
     xmlns:m="http://moyaproject.com"
     xmlns:img="http://moyaproject.com/imagelib"
     xmlns:w="http://moyaproject.com/widgets"
-    xmlns:html="http://moyaproject.com/html">
+    xmlns:html="http://moyaproject.com/html"
+    xmlns:let="http://moyaproject.com/let"
+    xmlns:db="http://moyaproject.com/db">
 
     <form id="wiki" libname="form.page.edit" style="horizontal" xmlns="http://moyaproject.com/forms">
         <hidden-input name="revision_id" initial="revision.id" />
@@ -38,11 +40,23 @@
         </actions>
     </form>
 
-    <form libname="form.page.new" csrf="no" action="." method="get" style="simple" xmlns="http://moyaproject.com/forms">
-        <w:well>
-            <m:md>New Wiki page</m:md>
-            <input maxlength="100" name="new" placeholder="page title"/>
-        </w:well>
+    <form legend="New Wiki Page" libname="form.page.new" style="horizontal" xmlns="http://moyaproject.com/forms">
+        <input label="Title" maxlength="100" name="title" required="yes"/>
+        <input label="Slug" maxlength="100" name="slug" help="Leave blank to auto-generate a slug"/>
+        <actions>
+            <submit-button visual="success" name="action" clicked="new" text="Create New Page"/>
+        </actions>
+        <adapt-field field="slug">
+            <m:return value="slug:values.title" if="not value"/>
+        </adapt-field>
+        <validate-field field="slug">
+            <fail if="slug:value != value">
+                Not a valid slug (must contain lower-case letters, numbers, underscores, and hyphens only)
+            </fail>
+            <db:if-exists model="#Page" let:slug="value">
+                <fail>A page with this slug already exists.</fail>
+            </db:if-exists>
+        </validate-field>
     </form>
 
     <form libname="form.page.create" xmlns="http://moyaproject.com/forms">
@@ -88,7 +102,7 @@
             <html:p>
                 <select name="version" initial="revision.parent.version">
                     <m:for src="rsortedby:[page.revisions, `version`]" dst="r" filter="not r.is_draft">
-                        <option value="${r.version}">${r.revision_label}</option>
+                        <option value="${r.version}">${r.revision_label} ${r.comment}</option>
                     </m:for>
                 </select>
             </html:p>

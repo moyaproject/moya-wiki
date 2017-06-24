@@ -29,12 +29,9 @@
     <a class="list-group-item" href="{% url 'page_edit' with slug=page.slug %}">
       <i class="glyphicon glyphicon-pencil"></i> Edit Page
     </a>
-    <li class="list-group-item">
-
-      <form action="">
-        <input id="input-new-page" name="new" type="text" class="form-control" placeholder="New Page Title">
-      </form>
-    </li>
+    <a class="list-group-item" href="{% url 'page_new' %}">
+      <i class="glyphicon glyphicon-plus"></i> New Page
+    </a>
 
   </ul>
 
