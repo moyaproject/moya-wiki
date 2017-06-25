@@ -49,3 +49,27 @@
 {
     opacity:1;
 }
+
+textarea[name=content]
+{
+    height:80vh;
+}
+
+.moya-wiki-preview
+{
+    height:80vh;
+    overflow:auto;
+}
+
+
+.moya-imglib-manager
+{
+    height:80vh;
+    overflow-y:auto;
+}
+
+.moya-imglib-image-container
+{
+    max-height:calc(80vh - 70px) !important;
+    display:block !important;
+}

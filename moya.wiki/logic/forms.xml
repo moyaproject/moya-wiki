@@ -7,37 +7,39 @@
     xmlns:let="http://moyaproject.com/let"
     xmlns:db="http://moyaproject.com/db">
 
-    <form id="wiki" libname="form.page.edit" style="horizontal" xmlns="http://moyaproject.com/forms">
+    <form id="wiki" libname="form.page.edit" style="basic" xmlns="http://moyaproject.com/forms">
         <hidden-input name="revision_id" initial="revision.id" />
         <hidden-input name="page_id" initial="page.id"/>
         <input name="title" label="Title" maxlength="100" required="yes"/>
         <input label="Tags" name="tagtext" maxlength="200" required="no" placeholder="comma separated tags"/>
 
-        <radio-group label="Markup" inline="yes" name="markup" initial=".app.settings.default_markup">
+        <radio-group inline="yes" name="markup" initial=".app.settings.default_markup">
             <radio on="bbcode" text="BBCode"/>
             <radio on="html" text="HTML"/>
             <radio on="markdown" text="Markdown"/>
             <radio on="text" text="Text"/>
         </radio-group>
-        <field label="Images">
-            <img:manager collection="revision.images" picker="yes" picker_text="Insert image" on_pick="on_pick_post_images"/>
-        </field>
-        <field label="Content">
+        <field>
             <w:tab-panel>
-                <w:tab title="Markup">
+                <w:tab title="Markup" id="markup">
                     <text-area style="simple" name="content" label="Content" libname="form.post.editor" rows="20"/>
                 </w:tab>
+                <w:tab title="Images">
+                    <img:manager collection="revision.images" picker="yes" picker_text="Insert image" on_pick="on_pick_post_images"/>
+                </w:tab>
                 <w:tab title="Preview">
-
+                    <m:node template="editor/preview_panel.html"/>
                 </w:tab>
             </w:tab-panel>
         </field>
 
+        <field>
         <actions>
             <submit-button visual="success" name="action" clicked="publish" text="Publish"/>
             <submit-button visual="default" name="action" clicked="discard" text="Discard Draft"/>
             <submit-button visual="default" name="action" clicked="reset" text="Reset"/>
         </actions>
+    </field>
     </form>
 
     <form legend="New Wiki Page" libname="form.page.new" style="horizontal" xmlns="http://moyaproject.com/forms">

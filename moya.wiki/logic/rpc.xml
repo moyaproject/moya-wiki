@@ -34,20 +34,17 @@ Create a JSONRPC interface which you can see on /jsonrpc/
             </return-dict>
         </rpc:method>
 
-        <!--
         <rpc:method name="preview_content" description="Preview content from a post">
-            <rpc:parameter name="content" type="string">Content text</rpc:parameter>
-            <rpc:parameter name="post_id" type="number">ID of post</rpc:parameter>
-            <rpc:parameter name="markup" type="string">Markup type</rpc:parameter>
-
-            <db:get model="#Post" let:id="post_id" dst="post" />
-
+            <rpc:parameter name="revision_id" type="number">ID of revision</rpc:parameter>
+            <db:get model="#Revision" let:id="revision_id" dst="revision" />
             <return-dict>
-                <render-template template="rpc/preview_content.html" dst="html"
-                    let:post="post.draft" let:content="content" let:markup="markup"/>
+                <render-template
+                    template="rpc/preview.html"
+                    dst="html"
+                    let:page="revision.page"
+                    let:revision="revision"/>
             </return-dict>
         </rpc:method>
-    -->
 
         <rpc:method name="save_draft" description="Save a draft post">
             <rpc:parameter name="revision_id">ID of post</rpc:parameter>
