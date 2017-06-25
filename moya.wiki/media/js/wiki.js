@@ -25,9 +25,10 @@ function on_pick_post_images(collection_uuid, images, callback)
         var text_end = value.substring(textarea.selectionEnd, value.length);
         textarea.value = text_start + result.html + text_end;
         callback();
-        $('a[href="#tag-panel-fields_2-markup"]').tab('show');
+        $('a[href="#markup-tabs-markup"]').tab('show');
         on_draft_change();
     });
+
 }
 
 $(function(){
@@ -49,6 +50,12 @@ $(function(){
             clearTimeout(save_timeout);
         }
         save_timeout = setTimeout(on_draft_change, 1500);
+    });
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        if($(e.target).attr('href')=='#markup-tabs-preview')
+        {
+            update_preview();
+        }
     });
     update_preview();
 });

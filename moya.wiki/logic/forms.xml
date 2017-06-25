@@ -20,7 +20,7 @@
             <radio on="text" text="Text"/>
         </radio-group>
         <field>
-            <w:tab-panel>
+            <w:tab-panel id="markup-tabs">
                 <w:tab title="Markup" id="markup">
                     <text-area style="simple" name="content" label="Content" libname="form.post.editor" rows="20"/>
                 </w:tab>
@@ -34,12 +34,12 @@
         </field>
 
         <field>
-        <actions>
-            <submit-button visual="success" name="action" clicked="publish" text="Publish"/>
-            <submit-button visual="default" name="action" clicked="discard" text="Discard Draft"/>
-            <submit-button visual="default" name="action" clicked="reset" text="Reset"/>
-        </actions>
-    </field>
+            <actions>
+                <submit-button visual="success" name="action" clicked="publish" text="Publish"/>
+                <submit-button visual="default" name="action" clicked="discard" text="Discard Draft"/>
+                <submit-button visual="default" name="action" clicked="reset" text="Reset"/>
+            </actions>
+        </field>
     </form>
 
     <form legend="New Wiki Page" libname="form.page.new" style="horizontal" xmlns="http://moyaproject.com/forms">

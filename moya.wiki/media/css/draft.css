@@ -52,23 +52,19 @@
 
 textarea[name=content]
 {
-    height:80vh;
+     height:calc(100vh - 140px);
 }
 
 .moya-wiki-preview
 {
-    height:80vh;
+    height:calc(100vh - 140px);
     overflow:auto;
 }
 
 
 .moya-imglib-manager
 {
-    min-height:80vh;
-    /*
-    overflow-y:auto;
-    overflow-x:hidden;
-    */
+    min-height:calc(100vh - 140px);
 }
 
 .moya-imglib-image-container
