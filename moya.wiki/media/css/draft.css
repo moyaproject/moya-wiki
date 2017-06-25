@@ -72,3 +72,8 @@ textarea[name=content]
     max-height:calc(80vh - 70px) !important;
 
 }
+
+.wiki-settings
+{
+    height:calc(100vh - 140px);
+}
