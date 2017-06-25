@@ -69,7 +69,6 @@ function check_draft_status()
             $status.removeClass('changed');
             $status.removeClass('saving');
             $status.addClass('saved');
-            update_preview();
         }
         else
         {
@@ -117,6 +116,7 @@ function update_draft()
         {
             draft_saved_changes = result.count;
         }
+        $('.moya-wiki-preview').html(result.html);
         check_draft_status();
     });
 }
@@ -134,6 +134,4 @@ function update_preview()
         $preview.html(result.html);
     });
 }
-
-
 

@@ -58,7 +58,14 @@ Create a JSONRPC interface which you can see on /jsonrpc/
             <for src="['title', 'markup', 'content', 'tagtext']" dst="field">
                 <set-item src="revision" index="field" value="draft[field]"/>
             </for>
-            <return-dict let:status="'success'" let:count="count"/>
+            <return-dict let:status="'success'" let:count="count">
+                <render-template
+                    template="rpc/preview.html"
+                    dst="html"
+                    let:page="revision.page"
+                    let:revision="revision"/>
+            </return-dict>
+
         </rpc:method>
 
         <!--
