@@ -52,28 +52,32 @@
 
 textarea[name=content]
 {
-     height:calc(100vh - 140px);
+     height:calc(100vh - 148px);
 }
 
 .moya-wiki-preview
 {
-    height:calc(100vh - 140px);
+    height:calc(100vh - 148px);
     overflow:auto;
 }
 
 
 .moya-imglib-manager
 {
-    min-height:calc(100vh - 140px);
+    min-height:calc(100vh - 148px);
 }
 
 .moya-imglib-image-container
 {
-    max-height:calc(80vh - 70px) !important;
+    /*max-height:calc(80vh - 70px) !important;
+    overflow-y:auto !important;
+    display:block !important;*/
 
 }
 
 .wiki-settings
 {
-    height:calc(100vh - 140px);
+    height:calc(100vh - 148px);
+    overflow-y:auto;
+    overflow-x:hidden;
 }

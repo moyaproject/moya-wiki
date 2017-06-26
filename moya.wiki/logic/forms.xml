@@ -10,10 +10,10 @@
     <form id="wiki" libname="form.page.edit" style="basic" xmlns="http://moyaproject.com/forms">
         <hidden-input name="revision_id" initial="revision.id" />
         <hidden-input name="page_id" initial="page.id"/>
-
+        <hidden-input name="wiki_rpc" initial=".appurls.rpc"/>
         <field>
             <w:tab-panel id="markup-tabs">
-                <w:tab title="Content" id="markup">
+                <w:tab title="Edit" id="markup">
                     <text-area style="simple" name="content" label="Content" libname="form.post.editor" rows="20"/>
                 </w:tab>
                 <w:tab title="Images">
@@ -21,16 +21,11 @@
                 </w:tab>
                 <w:tab title="Settings">
                     <html:div class="wiki-settings">
-                        <group>
+                        <group style="horizontal">
                             <input name="title" label="Title" maxlength="100" required="yes"/>
                             <input label="Tags" name="tagtext" maxlength="200" required="no" placeholder="comma separated tags"/>
-
-                            <radio-group label="Markup Type" inline="no" name="markup" initial=".app.settings.default_markup">
-                                <radio on="bbcode" text="BBCode"/>
-                                <radio on="html" text="HTML"/>
-                                <radio on="markdown" text="Markdown"/>
-                                <radio on="text" text="Text"/>
-                            </radio-group>
+                            <m:get-markup-choices dst="markups" />
+                            <select label="Markup Type" choices="markups" name="markup" initial=".app.settings.default_markup"/>
                         </group>
                     </html:div>
                 </w:tab>
@@ -43,7 +38,7 @@
         <field>
             <actions>
                 <submit-button visual="success" name="action" clicked="publish" text="Publish"/>
-                <submit-button visual="default" name="action" clicked="discard" text="Discard Draft"/>
+                <submit-button visual="default" name="action" clicked="discard" text="Discard"/>
                 <submit-button visual="default" name="action" clicked="reset" text="Reset"/>
             </actions>
         </field>

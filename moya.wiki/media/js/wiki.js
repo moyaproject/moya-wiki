@@ -39,7 +39,7 @@ $(function(){
     draft_saves_count = 0;
 
     var $form = $('form#wiki');
-    $form.find('input,textarea').change(function(){
+    $form.find('input,textarea,select').change(function(){
         on_draft_change();
     });
     $form.find('input,textarea').bind('input', function(){
@@ -98,7 +98,7 @@ function get_draft()
     var $form = $('form#wiki');
     var draft = {
         "title": $form.find('input[name=title]').val(),
-        "markup": $form.find('input:radio[name=markup]:checked').val(),
+        "markup": $form.find('select[name=markup]').val(),
         "content": $form.find('textarea[name=content]').val(),
         "tagtext": $form.find('input[name=tagtext]').val()
     }
