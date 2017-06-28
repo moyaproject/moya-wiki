@@ -12,6 +12,7 @@
         <title>${revision.title}</title>
         <include-js path="js/wiki.js"/>
         <include-js path="js/jsonrpc.js" from="moya.jsonrpc" />
+        <include-css path="css/wiki.css"/>
         <section name="main">
         </section>
     </content>
@@ -94,7 +95,6 @@ Use the admin panel to *publish* your changes.
         <include-css path="css/draft.css"/>
         <section name="main" merge="prepend">
             <render src="form"/>
-            <node template="editor/draft.html"/>
         </section>
     </content>
 

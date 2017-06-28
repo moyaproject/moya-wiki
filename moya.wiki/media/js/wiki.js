@@ -58,32 +58,54 @@ $(function(){
         }
     });
     update_preview();
+    check_draft_status();
 });
 
 function check_draft_status()
 {
-    var $status = $('.wiki-draft-status')
-    if(draft_saves_count != 0)
+    var $status = $('.wiki-draft-status');
+    var $form = $('form#wiki');
+    var $tab = $form.find('a[href=#markup-tabs-markup]');
+
+    if (draft_saves_count != 0)
     {
-        $status.removeClass('saved');
-        $status.removeClass('changed');
-        $status.addClass('saving');
+        $tab.html('Edit <span class="text-info">&nbsp;<i class="glyphicon glyphicon-cloud-upload"></i></span>');
     }
     else
     {
-        if(draft_changes == draft_saved_changes)
-        {
-            $status.removeClass('changed');
-            $status.removeClass('saving');
-            $status.addClass('saved');
-        }
-        else
-        {
-            $status.removeClass('saving');
-            $status.removeClass('saved');
-            $status.addClass('changed');
-        }
+       if(draft_changes != draft_saved_changes)
+       {
+            $tab.html('Edit <span class="text-warning">&nbsp;<i class="glyphicon glyphicon-asterisk"></i></span>');
+       }
+       else
+       {
+            $tab.html('Edit <span class="text-success">&nbsp;<i class="glyphicon glyphicon-floppy-disk"></i></span>');
+       }
     }
+
+
+
+    // if(draft_saves_count != 0)
+    // {
+    //     $status.removeClass('saved');
+    //     $status.removeClass('changed');
+    //     $status.addClass('saving');
+    // }
+    // else
+    // {
+    //     if(draft_changes == draft_saved_changes)
+    //     {
+    //         $status.removeClass('changed');
+    //         $status.removeClass('saving');
+    //         $status.addClass('saved');
+    //     }
+    //     else
+    //     {
+    //         $status.removeClass('saving');
+    //         $status.removeClass('saved');
+    //         $status.addClass('changed');
+    //     }
+    // }
 }
 
 function on_draft_change()
