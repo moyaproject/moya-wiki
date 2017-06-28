@@ -1,6 +1,3 @@
 <h1>${page.title}</h1>
 
-{% markup-block as 'moya' set revision=revision %}
-{% markup page.markup as 'markdown' %}
-{% end-markup-block %}
-
+{% include "fragments/content.html" %}

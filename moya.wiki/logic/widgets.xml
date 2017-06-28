@@ -20,4 +20,10 @@
         </signature>
         <let revision="page.current" if="not revision"/>
     </widget>
+
+    <widget name="search-result" template="widgets/search_result.html">
+        <signature>
+            <attribute name="page">Page object</attribute>
+        </signature>
+    </widget>
 </moya>

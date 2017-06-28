@@ -8,14 +8,15 @@
     <mountpoint name="main">
         <!-- A simple default view to start you off -->
         <url route="/" view="#view.page" name="page_front"/>
-        <url route="/jsonrpc" view="#jsonrpc.interface" name="rpc"/>
-        <url route="/wiki/{slug}" view="#view.page" name="page"/>
-        <url route="/wiki/{slug}/r{integer:version}" view="#view.page" name="page_version"/>
-        <url route="/wiki/{slug}/drafts/{username}" view="#view.page" name="page_draft"/>
-        <url route="/wiki/{slug}" mount="#mountpoint.main" name="admin">
+        <url route="/~jsonrpc" view="#jsonrpc.interface" name="rpc"/>
+        <url route="/~new" view="#view.page.new" name="page_new">
             <forbidden if="not .user"/>
         </url>
-        <url route="/new" view="#view.page.new" name="page_new">
+        <url route="/~search" view="#view.search" name="page_search"/>
+        <url route="/{slug}" view="#view.page" name="page"/>
+        <url route="/{slug}/r{integer:version}" view="#view.page" name="page_version"/>
+        <url route="/{slug}/drafts/{username}" view="#view.page" name="page_draft"/>
+        <url route="/{slug}" mount="#mountpoint.main" name="admin">
             <forbidden if="not .user"/>
         </url>
     </mountpoint>
@@ -34,6 +35,20 @@
             if=".request.GET.new"
             name="page_edit"
             let:slug="slug:.request.GET.new"/>
+    </view>
+
+    <view libname="view.search" content="#content.search">
+        <let q=".request.GET.q"/>
+        <db:query
+            model="#Page"
+            filter="#Page.current.content_text icontains q"
+            orderby="#Page.current.title"
+            dst="pages"/>
+        <db:query
+            model="#Tag"
+            filter="#Tag.name ilike q"
+            dst="tags"/>
+
     </view>
 
     <view libname="view.page" content="#content.page">
@@ -84,9 +99,8 @@
             <db:create
                 dst="page"
                 model="#Page"
-                let:slug="form.data.slug"
-            />
-            <wiki:create-draft page="page" dst="revision"/>
+                let:slug="form.data.slug"/>
+            <wiki:create-draft page="page" title="form.data.title" dst="revision"/>
             <redirect name="page_edit" let:slug="page.slug"/>
         </forms:validate>
     </view>
@@ -100,8 +114,7 @@
             let:slug=".url.slug" let:purl="page_url" />
         <forms:validate src="form">
             <redirect name="page" let:slug=".url.slug" if="form.data.create!='yes'"/>
-            <wiki:create-page slug=".url.slug" dst="page"/>
-            <log-debug>Created ${page}</log-debug>
+            <wiki:create-page slug=".url.slug" title="title:.url.slug" dst="page"/>
             <redirect name="page_edit" let:slug=".url.slug"/>
         </forms:validate>
     </view>

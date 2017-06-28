@@ -8,12 +8,13 @@
 
     <tag name="create-page" synopsis="create a new wiki page">
         <signature>
+            <attribute name="title" empty="no">Page title</attribute>
             <attribute name="slug" empty="no">Page slug</attribute>
         </signature>
         <return>
             <db:get-or-create model="#Page" dst="page"
                 let:slug="slug"
-                initial="title=title:slug">
+                initial="title=title">
             </db:get-or-create>
         </return>
     </tag>
@@ -22,6 +23,7 @@
         <signature>
             <attribute name="page" missing="no">Page</attribute>
             <attribute name="base" required="no">Base Revision</attribute>
+            <attribute name="title" required="no">Draft title</attribute>
         </signature>
 
         <str dst="initial_content">
@@ -32,7 +34,7 @@
         <db:get-or-create
             dst="revision"
             model="#Revision"
-            initial="title=title:page.slug, content=strip:initial_content, parent=base"
+            initial="title=title or title:page.slug, content=strip:initial_content, parent=base"
             let:version="None"
             let:page="page"
             let:author=".user">

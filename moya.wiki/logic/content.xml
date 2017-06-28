@@ -17,6 +17,16 @@
         </section>
     </content>
 
+
+    <content libname="content.search" extends="#content.base">
+        <section name="main">
+            <console-render obj="list:tags"/>
+            <w:paginate src="pages" dst="page">
+                <wiki:search-result page="page"/>
+            </w:paginate>
+        </section>
+    </content>
+
     <content libname="content.page" extends="#content.base">
         <section name="main">
             <w:warning if="revision.is_draft and revision.author==.user">
@@ -31,11 +41,6 @@ Use the admin panel to *publish* your changes.
         <section name="side">
            <wiki:admin-panel page="page" revision="revision"/>
         </section>
-        <!--
-        <section name="admin_links" merge="append" if=".permissions.admin">
-            <w:link name="page_edit" let:slug=".url.slug" icon="edit">Edit Page</w:link>
-        </section>
-        -->
     </content>
 
     <content libname="content.front" extends="#content.base">
