@@ -10,7 +10,6 @@
 
     <content libname="content.base" template="page.html">
         <title>${revision.title}</title>
-        <include-js path="js/wiki.js"/>
         <include-js path="js/jsonrpc.js" from="moya.jsonrpc" />
         <include-css path="css/wiki.css"/>
         <section name="main">
@@ -20,10 +19,14 @@
 
     <content libname="content.search" extends="#content.base">
         <section name="main">
-            <console-render obj="list:tags"/>
             <w:paginate src="pages" dst="page">
                 <wiki:search-result page="page"/>
             </w:paginate>
+        </section>
+        <section name="side">
+            <for src="tags" dst="tag">
+                <md>${tag.name}</md>
+            </for>
         </section>
     </content>
 
@@ -98,6 +101,7 @@ Use the admin panel to *publish* your changes.
     <content libname="content.page.edit" extends="#content.base" template="editor.html">
         <title>Edit ${revision.title}</title>
         <include-css path="css/draft.css"/>
+        <include-js path="js/wiki.js"/>
         <section name="main" merge="prepend">
             <render src="form"/>
         </section>
