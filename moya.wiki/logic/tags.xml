@@ -105,4 +105,11 @@
         </db:atomic>
     </tag>
 
+    <filter name="wikimarkup" value="markup">
+        <str-replace src="markup" regex="\[\[(?P&lt;wikitag&gt;.*?)\]\]">
+            <render-template template="markup/wiki.html" let:wikitag="wikitag"/>
+        </str-replace>
+        <return value="markup"/>
+    </filter>
+
 </moya>

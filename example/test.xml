@@ -1,0 +1,19 @@
+<moya xmlns="http://moyaproject.com">
+
+    <macro docname="main">
+
+        <echo>Hello</echo>
+        <str dst="markup">
+            Hello, [[ name ]]!
+        </str>
+        <str dst="name">Will</str>
+        <breakpoint />
+        <str-replace src="markup" regex="\[\[(?P&lt;esc&gt;.*?)\]\]">
+            <str>Will</str>
+        </str-replace>
+
+        <echo>${markup}</echo>
+
+    </macro>
+
+</moya>
