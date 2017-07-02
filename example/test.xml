@@ -8,7 +8,7 @@
         </str>
         <str dst="name">Will</str>
         <breakpoint />
-        <str-replace src="markup" regex="\[\[(?P&lt;esc&gt;.*?)\]\]">
+        <str-replace src="markup"  dst="markup" regex="\[\[(?P&lt;esc&gt;.*?)\]\]">
             <str>Will</str>
         </str-replace>
 
