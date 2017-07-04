@@ -4,6 +4,7 @@
     xmlns:m="http://moyaproject.com">
 
     <model xmlns="http://moyaproject.com/db" libname="Page" repr="page ${slug}">
+        <string name="title" length="100" null="no" />
         <string name="slug" length="100" null="no" blank="no" index="yes"/>
         <foreign-key name="current" model="#Revision" blank="yes" null="yes"
             picker="#admintable.revision"/>
@@ -16,7 +17,6 @@
     <model xmlns="http://moyaproject.com/db" libname="Revision" repr="revision '${page.slug}' ${revision_label}">
         <foreign-key name="page" model="#Page" null="yes" backref="revisions" picker="#admintable.revision"/>
         <foreign-key name="parent" model="#Revision" blank="yes" picker="#admintable.revision"/>
-        <string name="title" length="100" null="no" />
         <string name="markup" length="20" default="markdown" />
         <text name="content" null="no" default="" />
         <text name="content_text" label="Content as text" null="yes" />
@@ -45,6 +45,10 @@
             </return>
         </property>
         <property name="is_default" expression="page.current.id==id"/>
+        <property name="title">
+            <m:return value="object.revision_label" if="object.is_draft"/>
+            <m:return value="object.page.title"/>
+        </property>
 
         <text name="comment" default=""/>
     </model>

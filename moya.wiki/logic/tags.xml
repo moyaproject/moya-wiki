@@ -11,30 +11,45 @@
             <attribute name="title" empty="no">Page title</attribute>
             <attribute name="slug" empty="no">Page slug</attribute>
         </signature>
-        <return>
-            <db:get-or-create model="#Page" dst="page"
-                let:slug="slug"
-                initial="title=title">
-            </db:get-or-create>
-        </return>
+        <render-template
+            template="initial.md"
+            dst="initial_content"
+            let:title="title"/>
+        <db:get-or-create
+            model="#Page"
+            dst="page"
+            let:slug="slug"
+            initial="title=title">
+            <db:create
+                model="#Revision"
+                dst="revision"
+                let:published="yes"
+                let:markup=".app.settings.default_markup"
+                let:content="initial_content"
+                let:page="page"
+                let:version="0"
+                let:author=".user"
+                let:published_time=".now"
+                let:updated_time=".now"/>
+            <db:create
+                model="moya.imagelib#Collection"
+                dst="revision.images"/>
+            <let page.current="revision"/>
+        </db:get-or-create>
+        <return value="page"/>
     </tag>
 
     <tag name="create-draft" synopsis="create a new draft">
         <signature>
             <attribute name="page" missing="no">Page</attribute>
-            <attribute name="base" required="no">Base Revision</attribute>
-            <attribute name="title" required="no">Draft title</attribute>
+            <attribute name="base" required="yes">Base Revision</attribute>
         </signature>
-
-        <str dst="initial_content">
-# This page has no content, please supply some!
-        </str>
 
         <let base="page.current" if="not base"/>
         <db:get-or-create
             dst="revision"
             model="#Revision"
-            initial="title=title or title:page.slug, content=strip:initial_content, parent=base"
+            initial="parent=base"
             let:version="None"
             let:page="page"
             let:author=".user">
@@ -50,7 +65,6 @@
                 if="base"
                 revision.images.slug="page.slug"
                 revision.content="base.content"
-                revision.title="base.title or title:page.slug"
                 revision.markup="base.markup"/>
         </db:get-or-create>
         <return value="revision"/>
@@ -107,9 +121,20 @@
 
     <filter name="wikimarkup" value="markup">
         <return>
-            <str-replace src="markup" regex="\[\[(?P&lt;wikitag&gt;.*?)\]\]">
-                <render-template template="markup/wiki.html" let:wikitag="wikitag"/>
-            </str-replace>
+            <replace src="markup" regex="\[\[(?P&lt;wikitag&gt;.*?)\]\]">
+                <let
+                    tokens="partition:[wikitag, ':']"
+                    wikitag="strip:first:tokens"
+                    islink="not bool:tokens.1"
+                    params="shlex:last:tokens"/>
+                <return>
+                    <render-template
+                        template="markup/wiki.html"
+                        let:wikitag="wikitag"
+                        let:islink="islink"
+                        let:params="params"/>
+                </return>
+            </replace>
         </return>
     </filter>
 

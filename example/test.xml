@@ -7,10 +7,9 @@
             Hello, [[ name ]]!
         </str>
         <str dst="name">Will</str>
-        <breakpoint />
-        <str-replace src="markup"  dst="markup" regex="\[\[(?P&lt;esc&gt;.*?)\]\]">
+        <replace src="markup"  dst="markup" regex="\[\[(?P&lt;esc&gt;.*?)\]\]">
             <str>Will</str>
-        </str-replace>
+        </replace>
 
         <echo>${markup}</echo>
 

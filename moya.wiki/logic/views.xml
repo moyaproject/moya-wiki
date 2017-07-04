@@ -8,11 +8,9 @@
     <mountpoint name="main">
         <!-- A simple default view to start you off -->
         <url route="/" view="#view.page" name="page_front"/>
-        <url route="/~jsonrpc" view="#jsonrpc.interface" name="rpc"/>
-        <url route="/~new" view="#view.page.new" name="page_new">
-            <forbidden if="not .user"/>
-        </url>
-        <url route="/~search" view="#view.search" name="page_search"/>
+        <url route="/-/jsonrpc" view="#jsonrpc.interface" name="rpc"/>
+        <url route="/-/new" view="#view.page.new" name="page_new"/>
+        <url route="/-/search" view="#view.search" name="page_search"/>
         <url route="/{slug}" view="#view.page" name="page"/>
         <url route="/{slug}/r{integer:version}" view="#view.page" name="page_version"/>
         <url route="/{slug}/drafts/{username}" view="#view.page" name="page_draft"/>
@@ -22,7 +20,6 @@
     </mountpoint>
 
     <mountpoint libname="mountpoint.main">
-        <url route="/create" view="#view.page.create" name="page_create"/>
         <url route="/edit" view="#view.page.edit" name="page_edit"/>
         <url route="/publish" view="#view.page.publish" name="page_publish"/>
         <url route="/discard" view="#view.page.discard" name="page_discard"/>
@@ -52,13 +49,7 @@
     </view>
 
     <view libname="view.page" content="#content.page">
-        <redirect
-            if=".request.GET.new"
-            name="page_create"
-            let:slug="slug:.request.GET.new"/>
-
         <let slug=".url.slug or .app.settings.default_page"/>
-
         <db:get
             model="#Page"
             let:slug="slug"
@@ -93,29 +84,15 @@
             let:slug="slug"/>
     </view>
 
-    <view libname="view.page.new" content="#content.page.new">
-        <forms:get form="#form.page.new" dst="form"/>
+    <view libname="view.page.new" content="#content.page.new" requires=".user">
+        <forms:get form="#form.page.new" let:title=".request.GET.title or ''" dst="form"/>
         <forms:validate src="form">
-            <db:create
+            <let title="strip:form.data.title"/>
+            <wiki:create-page
                 dst="page"
-                model="#Page"
-                let:slug="form.data.slug"/>
-            <wiki:create-draft page="page" title="form.data.title" dst="revision"/>
+                title="title"
+                slug="slug:title"/>
             <redirect name="page_edit" let:slug="page.slug"/>
-        </forms:validate>
-    </view>
-
-    <view libname="view.page.create" content="#content.page.create">
-        <db:if-exists model="#Page" let:slug=".url.slug">
-            <redirect name="page_edit" let:slug=".url.slug"/>
-        </db:if-exists>
-        <get-url name="page" let:slug=".url.slug" dst="page_url"/>
-        <forms:get form="#form.page.create" dst="form"
-            let:slug=".url.slug" let:purl="page_url" />
-        <forms:validate src="form">
-            <redirect name="page" let:slug=".url.slug" if="form.data.create!='yes'"/>
-            <wiki:create-page slug=".url.slug" title="title:.url.slug" dst="page"/>
-            <redirect name="page_edit" let:slug=".url.slug"/>
         </forms:validate>
     </view>
 

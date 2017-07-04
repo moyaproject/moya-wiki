@@ -3,12 +3,14 @@
     Image '${slug}' not found
 </div>
 {%- else %}
-<figure>
+<figure{% attrib class=params %}>
     <img style="width:100%;height:auto;"
         width="${1140}" height="${int:round:(1140 / image.aspect)}"
         src="${image.file|'thumbnail'(processor='lg')}">
+    {%- if image.description %}
     <figcaption>
     {% markup image.description as 'markdown' %}
     </figcaption>
+    {%- endif %}
 </figure>
 {% endif %}

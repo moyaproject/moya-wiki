@@ -23,9 +23,8 @@
     <table xmlns="http://moyaproject.com/admin" libname="admintable.revision"
         slug="revision" title="Revisions" model="#Revision"
         search="#Revision.title icontains q">
-        <column title="Title" link="yes" sort="title">${object.title}</column>
-        <column title="Version" sort="#Revision.version,#Revision.author.username">
-           ${object.revision_label}
+        <column title="Page" link="yes" sort="#Revision.version,#Revision.author.username">
+            ${object.revision_label} of '${object.page.title}'
         </column>
         <column title="Author"><m:render src="object.author"/></column>
         <column title="Published?" sort="published">

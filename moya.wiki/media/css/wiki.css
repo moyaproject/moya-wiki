@@ -1,8 +1,9 @@
 figure figcaption
 {
-    background-color:#f5f5f5;
+    border:1px solid #eee;
+    background-color:#f2f2f2;
     font-size:0.9em;
-    padding:0.5em;
+    padding:1.5em;
 }
 
 figcaption p:last-child
@@ -10,10 +11,50 @@ figcaption p:last-child
     margin-bottom:0px;
 }
 
+h1,h2,h3,h4,h5,h6
+{
+    clear:both;
+}
+
+article ul
+{
+    clear:both;
+}
+
 figure
 {
-    width:35%;
+    clear:both;
+    padding-bottom:1em;
+}
+
+figure.left
+{
+    width:300px;
     float:left;
     margin:0em 1em 1em 0em;
     clear:left;
+    padding-bottom:0px;
+}
+
+figure.right
+{
+    width:300px;
+    float:right;
+    margin:0em 0em 1em 1em;
+    clear:right;
+    padding-bottom:0px;
+}
+
+figure::after
+{
+    content:'';
+    clear:both;
+}
+
+@media (max-width: 767px)
+{
+    figure
+    {
+        width:100% !important;
+    }
 }

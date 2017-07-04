@@ -69,43 +69,20 @@ function check_draft_status()
 
     if (draft_saves_count != 0)
     {
-        $tab.html('Edit <span class="text-info">&nbsp;<i class="glyphicon glyphicon-cloud-upload"></i></span>');
+        $tab.html('Edit <span title="Saving" class="text-info">&nbsp;<i class="glyphicon glyphicon-cloud-upload"></i></span>');
     }
     else
     {
        if(draft_changes != draft_saved_changes)
        {
-            $tab.html('Edit <span class="text-warning">&nbsp;<i class="glyphicon glyphicon-asterisk"></i></span>');
+            $tab.html('Edit <span title="Unsaved changes" class="text-warning">&nbsp;<i class="glyphicon glyphicon-asterisk"></i></span>');
        }
        else
        {
-            $tab.html('Edit <span class="text-success">&nbsp;<i class="glyphicon glyphicon-floppy-disk"></i></span>');
+            $tab.html('Edit <span title="Saved" class="text-success">&nbsp;<i class="glyphicon glyphicon-floppy-disk"></i></span>');
        }
     }
 
-
-
-    // if(draft_saves_count != 0)
-    // {
-    //     $status.removeClass('saved');
-    //     $status.removeClass('changed');
-    //     $status.addClass('saving');
-    // }
-    // else
-    // {
-    //     if(draft_changes == draft_saved_changes)
-    //     {
-    //         $status.removeClass('changed');
-    //         $status.removeClass('saving');
-    //         $status.addClass('saved');
-    //     }
-    //     else
-    //     {
-    //         $status.removeClass('saving');
-    //         $status.removeClass('saved');
-    //         $status.addClass('changed');
-    //     }
-    // }
 }
 
 function on_draft_change()
@@ -119,7 +96,6 @@ function get_draft()
 {
     var $form = $('form#wiki');
     var draft = {
-        "title": $form.find('input[name=title]').val(),
         "markup": $form.find('select[name=markup]').val(),
         "content": $form.find('textarea[name=content]').val(),
         "tagtext": $form.find('input[name=tagtext]').val()

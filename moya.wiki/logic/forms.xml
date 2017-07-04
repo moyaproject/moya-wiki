@@ -23,7 +23,6 @@
                 <w:tab title="Settings">
                     <html:div class="wiki-settings">
                         <group style="horizontal">
-                            <input name="title" label="Title" maxlength="100" required="yes"/>
                             <input label="Tags" name="tagtext" maxlength="200" required="no" placeholder="comma separated tags"/>
                             <select label="Markup Type" choices="markups" name="markup" initial=".app.settings.default_markup"/>
                         </group>
@@ -39,39 +38,24 @@
         <field>
             <actions>
                 <submit-button visual="success" name="action" clicked="publish" text="Publish"/>
-                <submit-button visual="default" name="action" clicked="discard" text="Discard"/>
-                <submit-button visual="default" name="action" clicked="reset" text="Reset"/>
+                <submit-button visual="warning" name="action" clicked="discard" text="Discard"/>
+                <submit-button visual="warning" name="action" clicked="reset" text="Reset"/>
+                <w:button-link target="_blank" visual="default" name="page_draft" let:username=".user.username" let:slug="page.slug">View</w:button-link>
             </actions>
         </field>
     </form>
 
     <form legend="New Wiki Page" libname="form.page.new" style="horizontal" xmlns="http://moyaproject.com/forms">
-        <input label="Title" maxlength="100" name="title" required="yes"/>
-        <input label="Slug" maxlength="100" name="slug" help="Leave blank to auto-generate a slug"/>
+        <input label="Title" maxlength="100" name="title" initial="title" required="yes"
+            help="The title will be used to generate a unique URL"/>
         <actions>
             <submit-button visual="success" name="action" clicked="new" text="Create New Page"/>
         </actions>
-        <adapt-field field="slug">
-            <m:return value="slug:values.title" if="not value"/>
-        </adapt-field>
-        <validate-field field="slug">
-            <fail if="slug:value != value">
-                Not a valid slug (must contain lower-case letters, numbers, underscores, and hyphens only)
-            </fail>
-            <db:if-exists model="#Page" let:slug="value">
-                <fail>A page with this slug already exists.</fail>
+        <validate-field field="title">
+            <db:if-exists model="#Page" let:slug="slug:strip:value">
+                <fail>A page with this title already exists.</fail>
             </db:if-exists>
         </validate-field>
-    </form>
-
-    <form libname="form.page.create" xmlns="http://moyaproject.com/forms">
-        <w:dialog>
-            <m:md>Are you sure you want to create wiki page *${.url.slug}*?</m:md>
-            <w:dialog-buttons>
-                <submit-button name="create" clicked="yes" text="Create Page"/>
-                <submit-button visual="default" name="create" clicked="no" text="Cancel"/>
-            </w:dialog-buttons>
-        </w:dialog>
     </form>
 
     <form libname="form.page.publish" xmlns="http://moyaproject.com/forms">

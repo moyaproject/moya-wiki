@@ -55,7 +55,7 @@ Create a JSONRPC interface which you can see on /jsonrpc/
             <rpc:error code="no_draft" if="not revision or not revision.is_draft"/>
             <rpc:error code="no_permission" if="not revision.is_draft and revision.author != .user"/>
 
-            <for src="['title', 'markup', 'content', 'tagtext']" dst="field">
+            <for src="['markup', 'content', 'tagtext']" dst="field">
                 <set-item src="revision" index="field" value="draft[field]"/>
             </for>
             <return-dict let:status="'success'" let:count="count">
@@ -67,20 +67,6 @@ Create a JSONRPC interface which you can see on /jsonrpc/
             </return-dict>
 
         </rpc:method>
-
-        <!--
-        <rpc:method name="preview_comment" description="Preview comment">
-            <rpc:parameter name="comment" type="string" required="yes">Comment text</rpc:parameter>
-            <rpc:parameter name="markup" type="string" required="yes">Markup type</rpc:parameter>
-            <return-dict>
-                <render-template template="rpc/preview_comment.html" dst="html"
-                    let:comment="comment" let:markup="markup"/>
-            </return-dict>
-            <catch exception="markup.unsupported">
-                <rpc:error code="markup_not_supported">markup '${markup}' is not supported</rpc:error>
-            </catch>
-        </rpc:method>
-    -->
 
     </rpc:interface>
 

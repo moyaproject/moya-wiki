@@ -31,6 +31,7 @@
     </content>
 
     <content libname="content.page" extends="#content.base">
+        <title>${revision.title}</title>
         <section name="main">
             <w:warning if="revision.is_draft and revision.author==.user">
                 <md>
@@ -61,9 +62,9 @@ Use the admin panel to *publish* your changes.
     <content libname="content.page.missing" extends="#content.base">
         <title>Page Not Found</title>
         <section name="main">
-            <get-url name="page_create" let:slug="slug" dst="create_url"/>
+            <get-url name="page_new" let:slug="slug" dst="url" query="title=title:slug"/>
             <w:info>
-                <md>No page here. Would you like to [Create it](${create_url})?</md>
+                <md>No page here. Would you like to [Create it](${url})?</md>
             </w:info>
         </section>
     </content>
@@ -99,7 +100,7 @@ Use the admin panel to *publish* your changes.
     </content>
 
     <content libname="content.page.edit" extends="#content.base" template="editor.html">
-        <title>Edit ${revision.title}</title>
+        <title>Edit ${revision.page.title}</title>
         <include-css path="css/draft.css"/>
         <include-js path="js/wiki.js"/>
         <section name="main" merge="prepend">
