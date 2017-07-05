@@ -1,10 +1,9 @@
 <div class="panel panel-info"">
   <div class="panel-heading">Admin</div>
   <div class="panel-body">
-
       <select onchange="window.location.href=this.value" class="form-control">
       {#- Drafts first, sorted alphabetically, then descending order of version -#}
-      {%- for r in sortedby:[revisions, `[bool:version, -(version or 0), author.username]`] %}
+      {%- for r in sortedby:[revisions, `[not isnone:version, -(version or 0), author.username]`] %}
         <option{% attrib value=r.url, selected=r==revision ? "selected" : None %}>
           ${r.revision_label}
           {%- if r.comment %}&nbsp;&ndash; {% summarize chars 24 mark '&hellip;' %}${r.comment}{% end %}{% endif -%}
@@ -12,27 +11,27 @@
         </option>
       {%- endfor %}
       </select>
-
   </div>
 
+  {% with editclass=revision.may_edit ? None : 'disabled' -%}
   <ul class="list-group">
-    {% if revision.is_draft %}
-    <a class="list-group-item" href="{% url 'page_publish' with slug=page.slug %}">
+    {%- if revision.is_draft %}
+    <a {% attrib class=[editclass, 'list-group-item'] %} href="{% url 'page_publish' with slug=page.slug %}">
       <i class="glyphicon glyphicon-thumbs-up"></i> Publish Page
     </a>
-    {% endif %}
-    {% if not revision.is_draft and not revision.is_default %}
-    <a class="list-group-item" href="{% url 'page_default' with slug=page.slug, version=revision.version %}">
+    {%- endif %}
+    {%- if not revision.is_draft and not revision.is_default %}
+    <a {% attrib class=[editclass, 'list-group-item'] %} href="{% url 'page_default' with slug=page.slug, version=revision.version %}">
        <i class="glyphicon glyphicon-ok"></i> Make Default
     </a>
-    {% end %}
-    <a class="list-group-item" href="{% url 'page_edit' with slug=page.slug %}">
+    {%- end %}
+    <a {% attrib class=[editclass, 'list-group-item'] %} href="{% url 'page_edit' with slug=page.slug %}">
       <i class="glyphicon glyphicon-pencil"></i> Edit Page
     </a>
-    <a class="list-group-item" href="{% url 'page_new' %}">
+    <a {% attrib class=[permission:.app.settings.create_permission ? None : 'disabled', 'list-group-item'] %} href="{% url 'page_new' %}">
       <i class="glyphicon glyphicon-plus"></i> New Page
     </a>
-
   </ul>
+  {% endwith -%}
 
 </div>

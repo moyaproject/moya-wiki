@@ -29,7 +29,7 @@ figure
 
 figure.left
 {
-    width:300px;
+    width:350px;
     float:left;
     margin:0em 1em 1em 0em;
     clear:left;
@@ -38,7 +38,7 @@ figure.left
 
 figure.right
 {
-    width:300px;
+    width:400px;
     float:right;
     margin:0em 0em 1em 1em;
     clear:right;

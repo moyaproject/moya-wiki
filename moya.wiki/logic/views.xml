@@ -8,23 +8,27 @@
     <mountpoint name="main">
         <!-- A simple default view to start you off -->
         <url route="/" view="#view.page" name="page_front"/>
-        <url route="/-/jsonrpc" view="#jsonrpc.interface" name="rpc"/>
-        <url route="/-/new" view="#view.page.new" name="page_new"/>
-        <url route="/-/search" view="#view.search" name="page_search"/>
-        <url route="/{slug}" view="#view.page" name="page"/>
-        <url route="/{slug}/r{integer:version}" view="#view.page" name="page_version"/>
-        <url route="/{slug}/drafts/{username}" view="#view.page" name="page_draft"/>
-        <url route="/{slug}" mount="#mountpoint.main" name="admin">
-            <forbidden if="not .user"/>
+        <url route="/jsonrpc" view="#jsonrpc.interface" name="rpc"/>
+        <url route="/new" view="#view.page.new" name="page_new"/>
+        <url route="/search" view="#view.search" name="page_search"/>
+        <url route="/tag/{slug:tag}/" view="#view.tag" name="page_tag"/>
+        <url route="/page/{slug:slug}/" view="#view.page" name="page"/>
+        <url route="/page/{slug:slug}.{integer:version}/" view="#view.page" name="page_version"/>
+        <url route="/page/{slug:slug}/drafts/{username}/" view="#view.page" name="page_draft"/>
+        <url route="/page/{slug:slug}/" mount="#mountpoint.actions" name="admin">
+            <forbidden if="not permission:.app.settings.edit_permission"/>
+        </url>
+        <url route="/page/{slug:slug}.{integer:version}/" mount="#mountpoint.actions" name="admin">
+            <forbidden if="not permission:.app.settings.edit_permission"/>
         </url>
     </mountpoint>
 
-    <mountpoint libname="mountpoint.main">
+    <mountpoint libname="mountpoint.actions">
+        <url route="/make-default" view="#view.page.default" name="page_default"/>
         <url route="/edit" view="#view.page.edit" name="page_edit"/>
         <url route="/publish" view="#view.page.publish" name="page_publish"/>
         <url route="/discard" view="#view.page.discard" name="page_discard"/>
         <url route="/reset" view="#view.page.reset" name="page_reset"/>
-        <url route="/r{integer:version}/make-default" view="#view.page.default" name="page_default"/>
     </mountpoint>
 
     <view libname="view.front" content="#content.front">
@@ -45,7 +49,18 @@
             model="#Tag"
             filter="#Tag.name ilike q"
             dst="tags"/>
+    </view>
 
+    <view libname="view.tag" content="#content.tag">
+        <db:get-required
+            model="#Tag"
+            let:slug=".url.tag"
+            dst="tag"/>
+        <db:query
+            model="#Page"
+            src="tag.pages"
+            orderby="title"
+            dst="pages"/>
     </view>
 
     <view libname="view.page" content="#content.page">
@@ -55,17 +70,17 @@
             let:slug="slug"
             dst="page"/>
 
-        <if test=".url.version">
+        <let revision="page.current"/>
+        <if test="'version' in .url">
             <db:get-required
                 model="#Revision"
                 src="page.revisions"
                 dst="revision"
-                if=".url.version"
                 let:page="page"
-                let:version="int:.url.version"/>
+                let:version=".url.version"/>
             <redirect name="page" let:slug="slug" if="page.current==revision"/>
         </if>
-        <elif test=".url.username and .user">
+        <elif test="'username' in .url and .user">
             <db:get-required
                 model="#Revision"
                 src="page.revisions"
@@ -74,17 +89,14 @@
                 let:page="page"
                 let:version="None"/>
         </elif>
-        <else>
-            <let revision="page.current"/>
-        </else>
         <serve-content
-            content="#content.page.missing"
             if="not revision"
+            content="#content.page.missing"
             status="NOT_FOUND"
             let:slug="slug"/>
     </view>
 
-    <view libname="view.page.new" content="#content.page.new" requires=".user">
+    <view libname="view.page.new" content="#content.page.new" requires="permission:.app.settings.create_permission">
         <forms:get form="#form.page.new" let:title=".request.GET.title or ''" dst="form"/>
         <forms:validate src="form">
             <let title="strip:form.data.title"/>
@@ -178,7 +190,7 @@
     </view>
 
     <view libname="view.page.default" content="#content.page.default">
-        <db:get
+        <db:get-required
             model="#Page"
             let:slug=".url.slug"
             dst="page"/>
@@ -186,7 +198,7 @@
             model="#Revision"
             src="page.revisions"
             dst="revision"
-            if=".url.version"
+            if="'version' in .url"
             let:page="page"
             let:version="int:.url.version"/>
         <wiki:update-tags page="page" tags="revision.tagtext" />

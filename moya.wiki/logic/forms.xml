@@ -52,6 +52,9 @@
             <submit-button visual="success" name="action" clicked="new" text="Create New Page"/>
         </actions>
         <validate-field field="title">
+            <fail if="not slug:strip:value">
+                Title must contain alphanumeric characters.
+            </fail>
             <db:if-exists model="#Page" let:slug="slug:strip:value">
                 <fail>A page with this title already exists.</fail>
             </db:if-exists>

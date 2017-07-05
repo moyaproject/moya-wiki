@@ -18,6 +18,7 @@
         <db:get-or-create
             model="#Page"
             dst="page"
+            let:author=".user"
             let:slug="slug"
             initial="title=title">
             <db:create

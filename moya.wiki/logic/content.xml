@@ -30,6 +30,15 @@
         </section>
     </content>
 
+    <content libname="content.tag" extends="#content.base">
+        <title>${tag.name}</title>
+        <section name="main">
+            <w:paginate src="pages" dst="page">
+                <wiki:search-result page="page"/>
+            </w:paginate>
+        </section>
+    </content>
+
     <content libname="content.page" extends="#content.base">
         <title>${revision.title}</title>
         <section name="main">
@@ -43,7 +52,7 @@ Use the admin panel to *publish* your changes.
             <wiki:revision page="page" revision="revision"/>
         </section>
         <section name="side">
-           <wiki:admin-panel page="page" revision="revision"/>
+           <wiki:admin-panel if="page and revision.may_admin" page="page" revision="revision"/>
         </section>
     </content>
 
