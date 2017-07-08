@@ -15,7 +15,10 @@
             revision="signal.data.object"
             revision.updated_time=".now"
             revision.page.updated_time=".now"/>
-        <process-markup src="revision.content" type="${revision.markup}" dst="html"/>
+        <process-markup
+            src="revision.content"
+            type="${revision.markup}"
+            dst="html"/>
         <let revision.content_text="striptags:html"/>
         <log-debug>${revision} was updated</log-debug>
     </handle>

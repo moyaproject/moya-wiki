@@ -14,8 +14,7 @@
                 template="inserts/image.html"
                 let:image="image"
                 let:slug="slug"
-                let:params="commasplit:params"
-            />
+                let:params="commasplit:params"/>
         </return>
     </markup-insert>
 

@@ -16,7 +16,6 @@
         </section>
     </content>
 
-
     <content libname="content.search" extends="#content.base">
         <section name="main">
             <w:paginate src="pages" dst="page">
@@ -42,17 +41,15 @@
     <content libname="content.page" extends="#content.base">
         <title>${revision.title}</title>
         <section name="main">
+            <wiki:admin-panel if="page and revision.may_manage" page="page" revision="revision"/>
             <w:warning if="revision.is_draft and revision.author==.user">
                 <md>
-This is your *draft*, and is only visible to you.
+This is a *draft*, and is only visible to you Wiki managers.
 
-Use the admin panel to *publish* your changes.
+Use the admin panel to *publish* these changes.
                 </md>
             </w:warning>
             <wiki:revision page="page" revision="revision"/>
-        </section>
-        <section name="side">
-           <wiki:admin-panel if="page and revision.may_admin" page="page" revision="revision"/>
         </section>
     </content>
 
@@ -90,6 +87,10 @@ Use the admin panel to *publish* your changes.
 
     <content libname="content.page.create" extends="#content.page.form">
         <title>Create ${page_url}</title>
+    </content>
+
+    <content libname="content.page.delete" extends="#content.page.form">
+        <title>Delete ${page_url}</title>
     </content>
 
     <content libname="content.page.publish" extends="#content.page.form">

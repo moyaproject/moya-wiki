@@ -61,6 +61,22 @@
         </validate-field>
     </form>
 
+    <form libname="form.page.delete" style="basic" xmlns="http://moyaproject.com/forms">
+        <m:md>
+            ### Delete ${page.url} ?
+        </m:md>
+        <w:warning>
+            <m:md>
+                Deleting this page will **permanently** remove **${len:page.revisions}** revisions and **${page.count_images}** images.
+            </m:md>
+        </w:warning>
+        <checkbox name="confirm" required="yes" text="I understand"/>
+        <actions>
+            <submit-button visual="danger" text="Delete" />
+            <w:button-link visual="default" name="page" let:slug="page.slug">Cancel</w:button-link>
+        </actions>
+    </form>
+
     <form libname="form.page.publish" xmlns="http://moyaproject.com/forms">
         <w:dialog>
             <m:md>Are you sure you want to *publish* wiki page **${.url.slug}**?</m:md>
@@ -108,7 +124,7 @@
     <form libname="form.page.default" xmlns="http://moyaproject.com/forms">
         <w:dialog>
             <m:md>
-                Are you sure you want to make r${revision.version} the default page?
+                Are you sure you want to make revision **${revision.version}** the default page?
             </m:md>
             <w:dialog-buttons>
                 <submit-button visual="primary" name="default" clicked="yes" text="Make Default"/>

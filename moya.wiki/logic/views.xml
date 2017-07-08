@@ -12,20 +12,28 @@
         <url route="/new" view="#view.page.new" name="page_new"/>
         <url route="/search" view="#view.search" name="page_search"/>
         <url route="/tag/{slug:tag}/" view="#view.tag" name="page_tag"/>
-        <url route="/page/{slug:slug}/" view="#view.page" name="page"/>
-        <url route="/page/{slug:slug}.{integer:version}/" view="#view.page" name="page_version"/>
-        <url route="/page/{slug:slug}/drafts/{username}/" view="#view.page" name="page_draft"/>
-        <url route="/page/{slug:slug}/" mount="#mountpoint.actions" name="admin">
+        <url route="/page/" mount="#mountpoint.page" name="page"/>
+    </mountpoint>
+
+    <mountpoint libname="mountpoint.page">
+        <url route="/{slug:slug}/" view="#view.page" name="page"/>
+        <url route="/{slug:slug}.{integer:version}/" view="#view.page" name="page_version"/>
+        <url route="/{slug:slug}/drafts/{username}/" view="#view.page" name="page_draft"/>
+        <url route="/{slug:slug}/" mount="#mountpoint.page.actions" name="admin">
             <forbidden if="not permission:.app.settings.edit_permission"/>
         </url>
-        <url route="/page/{slug:slug}.{integer:version}/" mount="#mountpoint.actions" name="admin">
+        <url route="/{slug:slug}.{integer:version}/" mount="#mountpoint.revision.actions">
             <forbidden if="not permission:.app.settings.edit_permission"/>
         </url>
     </mountpoint>
 
-    <mountpoint libname="mountpoint.actions">
+    <mountpoint libname="mountpoint.revision.actions">
         <url route="/make-default" view="#view.page.default" name="page_default"/>
+    </mountpoint>
+
+    <mountpoint libname="mountpoint.page.actions">
         <url route="/edit" view="#view.page.edit" name="page_edit"/>
+        <url route="/delete" view="#view.page.delete" name="page_delete"/>
         <url route="/publish" view="#view.page.publish" name="page_publish"/>
         <url route="/discard" view="#view.page.discard" name="page_discard"/>
         <url route="/reset" view="#view.page.reset" name="page_reset"/>
@@ -136,6 +144,20 @@
                 <default-case/>
                 <redirect name="page_edit" let:slug="page.slug"/>
             </switch>
+        </forms:validate>
+    </view>
+
+
+    <view libname="view.page.delete" content="#content.page.delete" requires="permission:.app.settings.delete_permission">
+        <db:get-required model="#Page" let:slug=".url.slug" dst="page"/>
+        <forms:get
+            form="#form.page.delete"
+            dst="form"
+            let:page="page"/>
+        <get-url name="page" let:slug=".url.slug" dst="page_url"/>
+        <forms:validate src="form">
+            <db:delete src="page"/>
+            <redirect name="page_front"/>
         </forms:validate>
     </view>
 
