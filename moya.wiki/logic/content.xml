@@ -44,7 +44,7 @@
             <wiki:admin-panel if="page and revision.may_manage" page="page" revision="revision"/>
             <w:warning if="revision.is_draft and revision.author==.user">
                 <md>
-This is a *draft*, and is only visible to you Wiki managers.
+This is a *draft*, and is only visible to Wiki managers.
 
 Use the admin panel to *publish* these changes.
                 </md>
