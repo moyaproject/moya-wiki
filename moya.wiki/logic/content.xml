@@ -59,11 +59,8 @@ This is a *draft*, and is only visible to Wiki managers.
 Use the admin panel to *publish* these changes.
                 </md>
             </w:warning>
-            <render src="revision_html"/>
-        </section>
-
-        <section name="side">
             <node template="fragments/toc.html" let:toc="toc"/>
+            <render src="revision_html"/>
         </section>
     </content>
 
