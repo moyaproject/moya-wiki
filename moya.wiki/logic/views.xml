@@ -47,7 +47,7 @@
     </view>
 
     <view libname="view.search" content="#content.search">
-        <let q=".request.GET.q"/>
+        <let q=".request.GET.q or ''"/>
         <db:query
             model="#Page"
             filter="#Page.searchable and #Page.current.content_text icontains q"
