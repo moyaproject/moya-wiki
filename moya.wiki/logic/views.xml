@@ -41,15 +41,18 @@
 
     <view libname="view.search" content="#content.search">
         <let q=".request.GET.q or ''"/>
-        <db:query
-            model="#Page"
-            filter="#Page.searchable and #Page.current.content_text icontains q"
-            orderby="#Page.title like q, #Page.title"
-            dst="pages"/>
-        <db:query
-            model="#Tag"
-            filter="#Tag.name ilike q"
-            dst="tags"/>
+        <forms:get form="#form.search" dst="form" bind=".request.GET"/>
+        <if test="q">
+            <db:query
+                model="#Page"
+                filter="#Page.searchable and #Page.current.content_text icontains q"
+                orderby="#Page.title like q, #Page.title"
+                dst="pages"/>
+            <db:query
+                model="#Tag"
+                filter="#Tag.name ilike q"
+                dst="tags"/>
+        </if>
     </view>
 
     <view libname="view.tag" content="#content.tag">

@@ -20,6 +20,7 @@
     <content libname="content.search" extends="#content.base" template="search.html">
         <title>Search</title>
         <section name="main">
+            <render src="form"/>
             <scope-node template="search/header.html"/>
             <w:paginate src="pages" dst="page">
                 <wiki:search-result page="page"/>

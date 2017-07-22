@@ -133,4 +133,8 @@
         </w:dialog>
     </form>
 
+    <form libname="form.search" style="basic" csrf="no" xmlns="http://moyaproject.com/forms" method="get">
+        <input maxlength="100" name="q" required="yes"/>
+    </form>
+
 </moya>
