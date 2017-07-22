@@ -60,6 +60,7 @@
         <property name="may_manage" expression="eval:.app.settings.manage_permission"/>
         <property name="may_edit" expression="eval:.app.settings.edit_permission"/>
         <property name="may_delete" expression="eval:.app.settings.delete_permission"/>
+        <property name="may_publish" expression="eval:.app.settings.publish_permission"/>
 
         <text name="comment" default=""/>
 
