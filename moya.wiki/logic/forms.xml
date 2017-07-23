@@ -81,7 +81,7 @@
         <w:dialog>
             <m:md>Are you sure you want to *publish* wiki page **${.url.slug}**?</m:md>
             <html:p>
-                <input maxlength="100" name="comment" placeholder="Revision comment"/>
+                <input maxlength="100" name="comment" placeholder="Revision comment (optional)"/>
             </html:p>
             <w:dialog-buttons>
                 <submit-button visual="primary" name="publish" clicked="yes" text="Publish Page"/>
