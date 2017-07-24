@@ -53,13 +53,13 @@
             model="#Tag"
             filter="#Tag.name ilike q"
             dst="tags"/>
-        <return-scope values="pages, tags"/>
+        <return-scope values="q, pages, tags"/>
     </macro>
 
     <view libname="view.search" content="#content.search">
         <forms:get form="#form.search" dst="form" bind=".request.GET"/>
         <return>
-            <call macro="#macro.search" let:q=".request.GET.q"/>
+            <call macro="#macro.search" let:q=".request.GET.q or ''"/>
         </return>
     </view>
 
