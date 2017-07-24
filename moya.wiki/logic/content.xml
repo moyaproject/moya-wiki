@@ -36,7 +36,7 @@
         </section>
     </content>
 
-    <content libname="content.tag" extends="#content.search">
+    <content libname="content.tag" extends="#content.search" template="tag.html">
         <title>${tag.name}</title>
         <section name="main">
             <scope-node template="tag/header.html"/>
