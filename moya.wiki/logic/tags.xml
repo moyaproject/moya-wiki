@@ -25,7 +25,7 @@
             <db:create
                 model="#Revision"
                 dst="revision"
-                let:published="yes"
+                let:published="no"
                 let:markup=".app.settings.default_markup"
                 let:content="initial_content"
                 let:page="page"

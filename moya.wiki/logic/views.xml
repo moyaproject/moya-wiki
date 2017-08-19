@@ -111,6 +111,7 @@
             content="#content.page.missing"
             status="NOT_FOUND"
             let:slug="slug"/>
+        <not-found if="not revision.published and not permission:'wiki-manage'"/>
         <db:query
             model="#Tag"
             src="page.tags"
