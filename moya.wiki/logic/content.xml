@@ -20,6 +20,18 @@
         </section>
     </content>
 
+    <content libname="content.forbidden" extends="#content.base">
+        <section name="main">
+            <w:warning><md>
+    **You do not have sufficient permissions for this page.**
+            </md></w:warning>
+            <md>
+    Email **[${.app.settings.admin_email}](mailto:${.app.settings.admin_email}?${urlencode:subject='permission request', body=.request.path_url})**
+    to request the required permissions.
+            </md>
+        </section>
+    </content>
+
     <content libname="content.search" extends="#content.base" template="search.html">
         <title>Search</title>
         <section name="main">

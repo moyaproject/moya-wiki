@@ -52,7 +52,7 @@
 
 
         <import location="../moya.wiki" priority="100"/>
-        <install name="wiki" lib="moya.wiki" mount="/"/>
+        <install name="wiki" lib="moya.wiki" mount="/" urlpriority="100"/>
 
         <install name="imagelib" lib="moya.imagelib"/>
         <mount app="imagelib" url="/images"/>

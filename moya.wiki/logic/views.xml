@@ -6,7 +6,9 @@
       xmlns:wiki="http://moyaproject.com/wiki">
 
     <mountpoint name="main">
-        <!-- A simple default view to start you off -->
+        <url route="/{*}" handler="forbidden">
+            <serve-content content="#content.forbidden" if=".user"/>
+        </url>
         <url route="/" view="#view.page" name="page_front"/>
         <url route="/jsonrpc" view="#jsonrpc.interface" name="rpc"/>
         <url route="/new" view="#view.page.new" name="page_new"/>
@@ -18,9 +20,6 @@
     <mountpoint libname="mountpoint.page">
         <url route="/{slug:slug}/" view="#view.page" name="page"/>
         <url route="/{slug:slug}.{integer:version}/" view="#view.page" name="page_version"/>
-        <!-- <url route="/{slug:slug}/drafts/{username}/" view="#view.page" name="page_draft"/> -->
-        <!-- <url route="/{slug:slug}/drafts/{username}/publish/" view="#view.publish" name="page_publish"/> -->
-
         <url route="/{slug:slug}/drafts/" mount="#mountpoint.draft">
             <forbidden if="not .user"/>
         </url>
@@ -53,9 +52,6 @@
                 let:slug=".url.slug"/>
         </url>
         <url route="/delete" view="#view.page.delete" name="page_delete"/>
-        <!-- <url route="/publish" view="#view.page.publish" name="page_publish"/> -->
-        <!-- <url route="/discard" view="#view.page.discard" name="page_discard"/> -->
-        <!-- <url route="/reset" view="#view.page.reset" name="page_reset"/> -->
     </mountpoint>
 
     <macro libname="macro.search">
