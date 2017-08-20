@@ -31,7 +31,7 @@
                 let:page="page"
                 let:version="0"
                 let:author=".user"
-                let:published_time=".now"
+                let:published_time="None"
                 let:updated_time=".now"/>
             <db:create
                 model="moya.imagelib#Collection"
